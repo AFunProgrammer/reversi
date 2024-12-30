@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/images">
+        <file alias="blackmove">assets/blackmove.png</file>
+        <file alias="blackpiece">assets/blackpiece.png</file>
+        <file alias="whitemove">assets/whitemove.png</file>
+        <file alias="whitepiece">assets/whitepiece.png</file>
+    </qresource>
+</RCC>
