@@ -43,16 +43,23 @@ class CReversiGame : public QObject
 public:
     explicit CReversiGame(QSize BoardSize = QSize(8,8), QObject *parent = nullptr);
 
-    // return true if player added, otherwise false
-    bool addPlayer(QString PlayerName, ePlayerType PlayerType);
+    // get the player information to be adjusted
+    ReversiPlayer getPlayer(eColor PlayerColor);
+    // set the player information that was needed to be adjusted (Color selects which
+    //   player is to be adjusted [either white or black]
+    // RETURNS true if set, otherwise false
+    bool setPlayerInfo(eColor PlayerColor, QString PlayerName, ePlayerType PlayerType);
+
     // return true if a valid move, otherwise false
     bool makeMove(QPoint Spot);
 
     // who's turn is it
     ReversiPlayer getPlayerTurn();
+    // attempt to change move to next player because there aren't any valid moves found
+    bool setNextTurnFromNoValidMoves();
 
     // get a list of valid movies
-    QList<QPoint> getValidMoves();
+    QList<QPoint> getValidMoves(eColor PlayerColor);
 
     // get the last move in the game
     ReversiSpot getLastMove();
@@ -87,6 +94,8 @@ private:
     QSize m_BoardSize;
     QList<QList<ReversiSpot>> m_Board;
 
+    // easy to add a new player to the game with some basic information
+    bool addPlayer(QString PlayerName, ePlayerType PlayerType);
 
     // constructs a board with specific number of spots
     void createBoard();
