@@ -31,7 +31,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QPushButton" name="btnForfeit">
+       <widget class="QPushButton" name="btnStart">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -45,7 +45,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Forfeit</string>
+         <string>Start Game</string>
         </property>
        </widget>
       </item>
@@ -89,14 +89,20 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="lblWhite">
+       <widget class="QPushButton" name="btnWhite">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>40</height>
+         </size>
+        </property>
         <property name="font">
          <font>
-          <pointsize>20</pointsize>
+          <pointsize>16</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>White:</string>
+         <string>White</string>
         </property>
        </widget>
       </item>
@@ -141,14 +147,20 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="lblBlack">
+       <widget class="QPushButton" name="btnBlack">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>40</height>
+         </size>
+        </property>
         <property name="font">
          <font>
-          <pointsize>20</pointsize>
+          <pointsize>16</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>Black:</string>
+         <string>Black</string>
         </property>
        </widget>
       </item>

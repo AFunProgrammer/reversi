@@ -92,12 +92,17 @@ void CReversiWidget::drawGameOnBoard()
     }
 
     // Draw Next Valid Move For Current Player
-    QList<QPoint> validMoves = pGame->getValidMoves();
     eColor currentPlayer = pGame->getPlayerTurn().m_PlayerColor;
+    QList<QPoint> validMoves = pGame->getValidMoves(currentPlayer);
+
     for( QPoint pos: validMoves ){
         int row = pos.y();
         int col = pos.x();
-        QRectF drawRect = QRectF(QPointF(row * m_CellSize.width(), col * m_CellSize.height()), m_CellSize);
+        float offsetX = m_CellSize.width() / 2 - (m_CellSize.width() / 4);
+        float offsetY = m_CellSize.height() / 2 - (m_CellSize.height() / 4);
+        QPointF origin = QPointF( (row * m_CellSize.width() + offsetX), (col * m_CellSize.height() + offsetY) );
+
+        QRectF drawRect = QRectF(origin, m_CellSize / 2);
         if ( currentPlayer == eColor::White ){
             paintGameBoard.drawPixmap(drawRect.toRect(), m_WhiteMove);
         } else {

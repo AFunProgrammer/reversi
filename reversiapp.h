@@ -1,8 +1,11 @@
 #ifndef REVERSIAPP_H
 #define REVERSIAPP_H
 
+#pragma once
 #include <QMainWindow>
 #include <QTimer>
+
+#include "cplayersettings.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,7 +23,12 @@ public:
 
 private:
     Ui::ReversiApp *ui;
-    QTimer gameTimer;
+    QTimer m_gameTimer;
+    CPlayerSettings m_playerSettingsDlg;
 
+    void selectNextMoveForComputer();
+    void updatePlayerSettings(eColor PlayerColor);
+
+    bool m_gameStart = false;
 };
 #endif // REVERSIAPP_H
