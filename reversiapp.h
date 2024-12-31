@@ -28,6 +28,7 @@ private:
 
     void selectNextMoveForComputer();
     void updatePlayerSettings(eColor PlayerColor);
+    void updateUiForGameProgress();
 
     bool m_gameStart = false;
 };

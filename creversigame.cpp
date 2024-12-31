@@ -140,7 +140,20 @@ bool CReversiGame::setNextTurnFromNoValidMoves()
 // get a list of valid movies
 QList<QPoint> CReversiGame::getValidMoves(eColor PlayerColor)
 {
-    QList<QPoint> validMoves;
+    static QList<QPoint> validMoves;
+    static eColor lastColorRequest = eColor::None;
+    static int lastMoveNumber = -1;
+
+    // calculating moves is expensive, so avoid doing it if possible
+    if ( lastColorRequest == PlayerColor && lastMoveNumber == m_Moves.count() ){
+        return validMoves;
+    }
+
+    // save current request information to check if can skip in the future
+    lastColorRequest = PlayerColor;
+    lastMoveNumber = m_Moves.count();
+    validMoves.clear();
+
     QSet<ReversiSpot*> Locations;
     // looking for the color of the opposite player to get spots to move in to
     eColor lookForColor = (PlayerColor == eColor::Black ? eColor::White : eColor::Black);
