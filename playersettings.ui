@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>326</width>
-    <height>156</height>
+    <height>131</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,19 +22,22 @@
      <item>
       <widget class="QLabel" name="lblPlayerType">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>0</width>
-         <height>40</height>
+         <width>45</width>
+         <height>30</height>
         </size>
        </property>
        <property name="text">
         <string>Play As:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -49,7 +52,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>40</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -64,19 +67,22 @@
      <item>
       <widget class="QLabel" name="lblPlayerName">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>0</width>
-         <height>40</height>
+         <width>45</width>
+         <height>30</height>
         </size>
        </property>
        <property name="text">
         <string>Name:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -85,7 +91,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>40</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -124,11 +130,11 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>40</height>
+         <height>30</height>
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton { min-height: 38px; min-width: 88px; }</string>
+        <string notr="true">QPushButton { min-height: 28px; min-width: 88px; }</string>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>

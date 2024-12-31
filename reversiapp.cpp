@@ -43,15 +43,18 @@ void ReversiApp::selectNextMoveForComputer()
         }
 
         if ( player.m_PlayerType == ePlayerType::Computer && m_gameStart == true){
-            if ( validMoves.count() > 0 ){
-                int randomIndex = QRandomGenerator::global()->generate() % validMoves.size();
-                QPoint move = validMoves.at(randomIndex);
-                qDebug() << "chose Random move at: " << move << " For Player: " << (player.m_PlayerColor == eColor::Black? "Black" : "White");
-
-                pGame->makeMove(move);
-            } else {
-                lackOfMoves++;
+            int randomIndex = QRandomGenerator::global()->generate() % validMoves.size();
+            QPoint move = validMoves.at(randomIndex);
+            qDebug() << "chose Random move at: " << move << " For Player: " << (player.m_PlayerColor == eColor::Black? "Black" : "White");
+            pGame->makeMove(move);
+        } else if (player.m_PlayerType == ePlayerType::Human && m_gameStart == true){
+            m_gameTimer.stop();
+            QPoint clickedOnCell = ui->oglReversi->lastClickedCell();
+            if ( clickedOnCell.x() != -1 ){
+                pGame->getValidMoves(player.m_PlayerColor);
+                pGame->makeMove(clickedOnCell);
             }
+            m_gameTimer.start(50);
         }
     } else {
         m_gameStart = false;
