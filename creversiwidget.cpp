@@ -119,12 +119,25 @@ QRect CReversiWidget::getBoardDrawRect(QRect PaintRect)
     QRect drawRect = QRect(QPoint(0,0),m_Board.size());
     drawRect.moveCenter(PaintRect.center());
 
+    m_LastDrawOrigin = drawRect.topLeft();
+
     return drawRect;
 }
 
 void CReversiWidget::setClearColor(QColor Color)
 {
     m_ClearColor = Color;
+}
+
+QPoint CReversiWidget::lastClickedCell()
+{
+    QPoint returnLastClickCell = m_LastClickCell;
+
+    // clear all previous clicked information
+    m_LastClickCell = QPoint(-1,-1);
+    m_LastClickRect = QRect(-1,-1,-1,-1);
+
+    return returnLastClickCell;
 }
 
 void CReversiWidget::resizeEvent(QResizeEvent *event)
@@ -134,9 +147,24 @@ void CReversiWidget::resizeEvent(QResizeEvent *event)
     createBoard(QSize(8,8));
 }
 
-void CReversiWidget::mousePressEvent(QMouseEvent* /*event*/)
+void CReversiWidget::mousePressEvent(QMouseEvent* event)
 {
+    QPoint clickPos = event->pos();
+    QPoint cellOrigin;
 
+    clickPos.setY(clickPos.y() - m_LastDrawOrigin.y());
+    clickPos.setX(clickPos.x() - m_LastDrawOrigin.x());
+
+    int col = clickPos.x() / (int)m_CellSize.width();
+    int row = clickPos.y() / (int)m_CellSize.height();
+
+    m_LastClickCell = QPoint(col,row);
+
+    cellOrigin = QPointF(col * m_CellSize.width(), row * m_CellSize.height()).toPoint();
+    cellOrigin.setX(cellOrigin.x() + m_LastDrawOrigin.x());
+    cellOrigin.setY(cellOrigin.y() + m_LastDrawOrigin.y());
+
+    m_LastClickRect = QRect(cellOrigin,m_CellSize.toSize());
 }
 
 
@@ -152,9 +180,15 @@ void CReversiWidget::paintEvent(QPaintEvent *event)
     Painter.setRenderHint(QPainter::SmoothPixmapTransform);
     Painter.fillRect(event->rect(),brushBackground);
 
+    // Draw current game setup with moves on the game board
     drawGameOnBoard();
+
     //Painter.drawPixmap(getBoardDrawRect(event->rect()),m_Board);
     Painter.drawPixmap(getBoardDrawRect(event->rect()),m_GameBoard);
+
+    /* making sure input is correct - only in debug */
+    Painter.setPen(QPen(Qt::red,4));
+    Painter.drawRect(m_LastClickRect);
 
     Painter.end();
 }
