@@ -81,7 +81,7 @@ void CReversiWidget::drawGameOnBoard()
             if ( Col.m_SpotColor != eColor::None ){
                 int row = Col.m_Spot.y();
                 int col = Col.m_Spot.x();
-                QRectF drawRect = QRectF(QPointF(row * m_CellSize.width(), col * m_CellSize.height()), m_CellSize);
+                QRectF drawRect = QRectF(QPointF(col * m_CellSize.width(), row * m_CellSize.height()), m_CellSize);
                 if ( Col.m_SpotColor == eColor::White ){
                     paintGameBoard.drawPixmap(drawRect.toRect(), m_WhitePiece);
                 } else {
@@ -100,7 +100,7 @@ void CReversiWidget::drawGameOnBoard()
         int col = pos.x();
         float offsetX = m_CellSize.width() / 2 - (m_CellSize.width() / 4);
         float offsetY = m_CellSize.height() / 2 - (m_CellSize.height() / 4);
-        QPointF origin = QPointF( (row * m_CellSize.width() + offsetX), (col * m_CellSize.height() + offsetY) );
+        QPointF origin = QPointF( (col * m_CellSize.width() + offsetX), (row * m_CellSize.height() + offsetY) );
 
         QRectF drawRect = QRectF(origin, m_CellSize / 2);
         if ( currentPlayer == eColor::White ){
@@ -155,6 +155,10 @@ void CReversiWidget::mousePressEvent(QMouseEvent* event)
     clickPos.setY(clickPos.y() - m_LastDrawOrigin.y());
     clickPos.setX(clickPos.x() - m_LastDrawOrigin.x());
 
+    if ( clickPos.x() > m_Board.width() || clickPos.y() > m_Board.height() ){
+        return; // did not click on the board
+    }
+
     int col = clickPos.x() / (int)m_CellSize.width();
     int row = clickPos.y() / (int)m_CellSize.height();
 
@@ -165,6 +169,11 @@ void CReversiWidget::mousePressEvent(QMouseEvent* event)
     cellOrigin.setY(cellOrigin.y() + m_LastDrawOrigin.y());
 
     m_LastClickRect = QRect(cellOrigin,m_CellSize.toSize());
+
+    if ( CReversiGame::getGlobalInstance()->getPlayerTurn().m_PlayerType == ePlayerType::Human){
+        CReversiGame::getGlobalInstance()->makeMove(m_LastClickCell);
+        this->update();
+    }
 }
 
 
