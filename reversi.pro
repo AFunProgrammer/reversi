@@ -34,24 +34,16 @@ RESOURCES += \
     reversiapp.qrc
 
 DISTFILES += \
-    ../reversi.pro/AndroidManifest.xml \
-    ../reversi.pro/build.gradle \
-    ../reversi.pro/gradle.properties \
-    ../reversi.pro/gradle/wrapper/gradle-wrapper.jar \
-    ../reversi.pro/gradle/wrapper/gradle-wrapper.properties \
-    ../reversi.pro/gradlew \
-    ../reversi.pro/gradlew.bat \
-    ../reversi.pro/res/values/libs.xml \
-    android/AndroidManifest.xml \
-    android/build.gradle \
-    android/gradle.properties \
-    android/gradle/wrapper/gradle-wrapper.jar \
-    android/gradle/wrapper/gradle-wrapper.properties \
-    android/gradlew \
-    android/gradlew.bat \
-    android/res/values/libs.xml
+    ./android/AndroidManifest.xml \
+    ./android/build.gradle \
+    ./android/gradle.properties \
+    ./android/gradle/wrapper/gradle-wrapper.jar \
+    ./android/gradle/wrapper/gradle-wrapper.properties \
+    ./android/gradlew \
+    ./android/gradlew.bat \
+    ./android/res/values/libs.xml \
 
 contains(ANDROID_TARGET_ARCH,arm64-v8a) {
     ANDROID_PACKAGE_SOURCE_DIR = \
-        $$PWD/../reversi.pro
+        $$PWD/android
 }
