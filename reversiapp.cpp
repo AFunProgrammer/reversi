@@ -4,8 +4,40 @@
 #include "creversigame.h"
 
 #include <QDebug>
+#include <QMessageBox>
 #include <QTimer>
 #include <QRandomGenerator>
+
+void announceWinner(QWidget* parent)
+{
+    CReversiGame* pGame = CReversiGame::getGlobalInstance();
+    ReversiPlayer whitePlayer = pGame->getPlayer(eColor::White);
+    ReversiPlayer blackPlayer = pGame->getPlayer(eColor::Black);
+    QString winnerScore = "";
+    QString loserScore = "";
+
+    int whiteScore = pGame->getPlayerScore(eColor::White);
+    int blackScore = pGame->getPlayerScore(eColor::Black);
+
+    if ( whiteScore > blackScore ){
+        winnerScore = QString::number(whiteScore,10).rightJustified(2,'0');
+        loserScore = QString::number(blackScore,10).rightJustified(2,'0');
+    } else {
+        winnerScore = QString::number(blackScore,10).rightJustified(2,'0');
+        loserScore = QString::number(whiteScore,10).rightJustified(2,'0');
+    }
+
+    QString winner = (whiteScore > blackScore ? whitePlayer.m_PlayerName : blackPlayer.m_PlayerName);
+    QString winnerMsg = (whiteScore != blackScore ? QString(winner + " is the winner!") : QString("Tie Game, Wow!"));
+    QString scoreComparison = QString( "Score:  " + winnerScore + " : " + loserScore );
+
+    QString displayMessage = QString(winnerMsg + "\r\n" + scoreComparison);
+
+    // should be *boardSize but easier to hardcode
+    if ( whiteScore + blackScore == 64 ){
+        QMessageBox::information(parent, "Game Over", displayMessage, QMessageBox::Ok);
+    }
+}
 
 bool areThereAnyValidMovesLeft(ReversiPlayer* Player, QList<QPoint>* ValidMoves){
     CReversiGame* pGame = CReversiGame::getGlobalInstance();
@@ -41,6 +73,18 @@ void makeComputerMove(QList<QPoint> validMoves)
     CReversiGame* pGame = CReversiGame::getGlobalInstance();
     ReversiPlayer player = pGame->getPlayerTurn();
 
+    // check to see if there is a corner in the moves, if so then take the corner
+    for ( QPoint move: validMoves ){
+        if ( ( move.x() == 0 && move.y() == 0 ) ||
+           ( move.x() == 7 && move.y() == 0 ) ||
+           ( move.x() == 0 && move.y() == 7 ) ||
+           ( move.x() == 7 && move.y() == 7 ) ) {
+            qDebug() << "chose corner move at: " << move << " For Player: " << (player.m_PlayerColor == eColor::Black? "Black" : "White");
+            pGame->makeMove(move);
+            return;
+        }
+    }
+
     int randomIndex = QRandomGenerator::global()->generate() % validMoves.size();
     QPoint move = validMoves.at(randomIndex);
     qDebug() << "chose Random move at: " << move << " For Player: " << (player.m_PlayerColor == eColor::Black? "Black" : "White");
@@ -59,6 +103,7 @@ void ReversiApp::selectNextMoveForComputer()
         validMoves = pGame->getValidMoves(player.m_PlayerColor);
 
         if ( areThereAnyValidMovesLeft(&player, &validMoves) == false ){
+            announceWinner(this); // no moves left so there must be a winner
             m_gameStart = false;
         }
 

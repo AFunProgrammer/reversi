@@ -163,17 +163,66 @@ void CReversiWidget::mousePressEvent(QMouseEvent* event)
     int row = clickPos.y() / (int)m_CellSize.height();
 
     m_LastClickCell = QPoint(col,row);
+    m_LastClickRect = convertCellToRect(m_LastClickCell);
 
-    cellOrigin = QPointF(col * m_CellSize.width(), row * m_CellSize.height()).toPoint();
-    cellOrigin.setX(cellOrigin.x() + m_LastDrawOrigin.x());
-    cellOrigin.setY(cellOrigin.y() + m_LastDrawOrigin.y());
-
-    m_LastClickRect = QRect(cellOrigin,m_CellSize.toSize());
-
+    // if it's a human player's turn, then make a move
     if ( CReversiGame::getGlobalInstance()->getPlayerTurn().m_PlayerType == ePlayerType::Human){
         CReversiGame::getGlobalInstance()->makeMove(m_LastClickCell);
         this->update();
     }
+}
+
+QRect CReversiWidget::convertCellToRect(QPoint Cell)
+{
+    QPoint cellOrigin;
+    QRect cellRect;
+
+    cellOrigin = QPointF(Cell.x() * m_CellSize.width(), Cell.y() * m_CellSize.height()).toPoint();
+    cellOrigin.setX(cellOrigin.x() + m_LastDrawOrigin.x());
+    cellOrigin.setY(cellOrigin.y() + m_LastDrawOrigin.y());
+
+    cellRect = QRect(cellOrigin, m_CellSize.toSize());
+
+    return cellRect;
+}
+
+void CReversiWidget::drawLastMoveIndicator(QPainter* Painter)
+{
+    ReversiSpot lastMove = CReversiGame::getGlobalInstance()->getLastMove();
+    QColor lastMoveColor = (lastMove.m_SpotColor == eColor::White ? Qt::white : Qt::black);
+
+    static float opacity = 0.3f;
+    static bool increase = true;
+    static eColor lastColor = eColor::White;
+
+    if ( lastColor == lastMove.m_SpotColor ){
+        if ( increase ){
+            if ( opacity <= 0.8f ){
+                opacity += 0.05f;
+            }
+            else{
+                increase = false;
+            }
+        } else {
+            if ( opacity >= 0.3f ){
+                opacity -= 0.05f;
+            } else {
+                increase = true;
+            }
+        }
+    } else {
+        opacity = 0.3f;
+        increase = true;
+        lastColor = lastMove.m_SpotColor;
+    }
+
+    /* show where the last move occured */
+    lastMoveColor.setAlphaF(opacity);
+    Painter->setPen(QPen(lastMoveColor, 4));
+    Painter->setBrush(QBrush(lastMoveColor));
+
+    QRect lastMoveRect = convertCellToRect(lastMove.m_Spot);
+    Painter->drawRect(lastMoveRect);
 }
 
 
@@ -196,8 +245,10 @@ void CReversiWidget::paintEvent(QPaintEvent *event)
     Painter.drawPixmap(getBoardDrawRect(event->rect()),m_GameBoard);
 
     /* making sure input is correct - only in debug */
-    Painter.setPen(QPen(Qt::red,4));
-    Painter.drawRect(m_LastClickRect);
+    // Painter.setPen(QPen(Qt::red,4));
+    // Painter.drawRect(m_LastClickRect);
+    drawLastMoveIndicator(&Painter);
+
 
     Painter.end();
 }

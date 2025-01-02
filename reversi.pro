@@ -34,6 +34,14 @@ RESOURCES += \
     reversiapp.qrc
 
 DISTFILES += \
+    ../reversi.pro/AndroidManifest.xml \
+    ../reversi.pro/build.gradle \
+    ../reversi.pro/gradle.properties \
+    ../reversi.pro/gradle/wrapper/gradle-wrapper.jar \
+    ../reversi.pro/gradle/wrapper/gradle-wrapper.properties \
+    ../reversi.pro/gradlew \
+    ../reversi.pro/gradlew.bat \
+    ../reversi.pro/res/values/libs.xml \
     android/AndroidManifest.xml \
     android/build.gradle \
     android/gradle.properties \
