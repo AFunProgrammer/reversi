@@ -150,7 +150,6 @@ void CReversiWidget::resizeEvent(QResizeEvent *event)
 void CReversiWidget::mousePressEvent(QMouseEvent* event)
 {
     QPoint clickPos = event->pos();
-    QPoint cellOrigin;
 
     clickPos.setY(clickPos.y() - m_LastDrawOrigin.y());
     clickPos.setX(clickPos.x() - m_LastDrawOrigin.x());
