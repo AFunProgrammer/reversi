@@ -48,8 +48,9 @@ private:
 
     QRect getBoardDrawRect(QRect PaintRect);
 
+    QRect convertCellToRect(QPoint Cell);
 
-
+    void drawLastMoveIndicator(QPainter* Painter);
 };
 
 #endif // CREVERSIWIDGET_H
