@@ -34,9 +34,7 @@ void announceWinner(QWidget* parent)
     QString displayMessage = QString(winnerMsg + "\r\n" + scoreComparison);
 
     // should be *boardSize but easier to hardcode
-    if ( whiteScore + blackScore == 64 ){
-        QMessageBox::information(parent, "Game Over", displayMessage, QMessageBox::Ok);
-    }
+    QMessageBox::information(parent, "Game Over", displayMessage, QMessageBox::Ok);
 }
 
 bool areThereAnyValidMovesLeft(ReversiPlayer* Player, QList<QPoint>* ValidMoves){

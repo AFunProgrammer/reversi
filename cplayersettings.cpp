@@ -14,7 +14,6 @@ CPlayerSettings::CPlayerSettings(QWidget *parent)
     // Add known player types (not clean but effective)
     ui->cboPlayerType->addItem(tr("Computer"),  QVariant::fromValue(static_cast<int>(ePlayerType::Computer)));
     ui->cboPlayerType->addItem(tr("Human"),     QVariant::fromValue(static_cast<int>(ePlayerType::Human)));
-    ui->cboPlayerType->addItem(tr("Observer"),  QVariant::fromValue(static_cast<int>(ePlayerType::Observer)));
 
     ui->btnDialogBox->connect(ui->btnDialogBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, [this](){applyChanges();});
     ui->btnDialogBox->connect(ui->btnDialogBox->button(QDialogButtonBox::Close), &QPushButton::clicked, [this](){cancelChangers();});
