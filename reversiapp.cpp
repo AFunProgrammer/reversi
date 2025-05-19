@@ -33,7 +33,7 @@ void announceWinner(QWidget* parent)
 
     QString displayMessage = QString(winnerMsg + "\r\n" + scoreComparison);
 
-    // should be *boardSize but easier to hardcode
+    // Always display this message, this only runs after checking that no more moves exist
     QMessageBox::information(parent, "Game Over", displayMessage, QMessageBox::Ok);
 }
 
