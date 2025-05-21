@@ -1,5 +1,7 @@
 #include "creversiwidget.h"
 
+#include <QApplication>
+
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QResizeEvent>
@@ -220,8 +222,11 @@ void CReversiWidget::drawLastMoveIndicator(QPainter* Painter)
     Painter->setPen(QPen(lastMoveColor, 4));
     Painter->setBrush(QBrush(lastMoveColor));
 
-    QRect lastMoveRect = convertCellToRect(lastMove.m_Spot);
-    Painter->drawRect(lastMoveRect);
+    if ( lastMove.m_Spot != QPoint(-1,-1))
+    {
+        QRect lastMoveRect = convertCellToRect(lastMove.m_Spot);
+        Painter->drawRect(lastMoveRect);
+    }
 }
 
 

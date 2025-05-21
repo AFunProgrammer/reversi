@@ -178,6 +178,8 @@ ReversiApp::ReversiApp(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // match the clear of the reversi widget to the window color
+    ui->oglReversi->setClearColor(ui->centralwidget->palette().color(QPalette::Window));
 
     // Setup Buttons
     ui->btnClose->connect(ui->btnClose, &QPushButton::clicked, qApp, &QCoreApplication::quit);
@@ -190,6 +192,10 @@ ReversiApp::ReversiApp(QWidget *parent)
         pGame->startGame();
         m_gameStart = true;
     });
+
+    // Set the "Black" player as computer at startup
+    CReversiGame::getGlobalInstance()->setPlayerInfo(eColor::Black, "Computer", ePlayerType::Computer);
+    ui->btnBlack->setText("Computer");
 
     // Setup Timer to function as "Computer Player
     // Set up the timer to execute the lambda every 1000ms (1 second)
