@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QRandomGenerator>
+#include <QREsource>
 
 void announceWinner(QWidget* parent)
 {
@@ -178,6 +179,8 @@ ReversiApp::ReversiApp(QWidget *parent)
 {
     ui->setupUi(this);
 
+    qDebug() << "Resource valid?" << QResource(":/images/whitemove").isValid();
+
     // match the clear of the reversi widget to the window color
     ui->oglReversi->setClearColor(ui->centralwidget->palette().color(QPalette::Window));
 
@@ -193,8 +196,10 @@ ReversiApp::ReversiApp(QWidget *parent)
         m_gameStart = true;
     });
 
-    // Set the "Black" player as computer at startup
+    // Set the initial players for startup of Player,Computer
+    CReversiGame::getGlobalInstance()->setPlayerInfo(eColor::White, "Player", ePlayerType::Human);
     CReversiGame::getGlobalInstance()->setPlayerInfo(eColor::Black, "Computer", ePlayerType::Computer);
+    ui->btnWhite->setText("Player");
     ui->btnBlack->setText("Computer");
 
     // Setup Timer to function as "Computer Player
