@@ -19,6 +19,9 @@ public:
 
     void setClearColor(QColor Color);
 
+    void setBoardColor(QColor Color);
+    QColor boardColor();
+
     void mousePressEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
@@ -27,6 +30,7 @@ public:
 
 private:
     QColor m_ClearColor = Qt::black;
+    QColor m_BoardColor = Qt::darkGreen;
 
     QSize m_BoardSize;
     QSizeF m_CellSize;
@@ -43,6 +47,7 @@ private:
     QPixmap m_BlackPiece;
 
     void createBoard(QSize BoardSize /* typically 8x8 */);
+    void createPieces();
 
     void drawGameOnBoard();
 

@@ -4,5 +4,6 @@
         <file alias="blackpiece">assets/blackpiece.png</file>
         <file alias="whitemove">assets/whitemove.png</file>
         <file alias="whitepiece">assets/whitepiece.png</file>
+        <file alias="tlb-colorwheel">assets/colorwheel.png</file>
     </qresource>
 </RCC>

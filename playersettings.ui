@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>326</width>
-    <height>131</height>
+    <width>323</width>
+    <height>182</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Comic Sans MS</family>
+    <pointsize>20</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -22,16 +28,10 @@
      <item>
       <widget class="QLabel" name="lblPlayerType">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>45</width>
-         <height>30</height>
-        </size>
        </property>
        <property name="text">
         <string>Play As:</string>
@@ -44,16 +44,10 @@
      <item>
       <widget class="QComboBox" name="cboPlayerType">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
        </property>
       </widget>
      </item>
@@ -67,16 +61,10 @@
      <item>
       <widget class="QLabel" name="lblPlayerName">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>45</width>
-         <height>30</height>
-        </size>
        </property>
        <property name="text">
         <string>Name:</string>
@@ -87,14 +75,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="txtName">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="txtName"/>
      </item>
     </layout>
    </item>
@@ -122,7 +103,7 @@
      <item>
       <widget class="QDialogButtonBox" name="btnDialogBox">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -133,8 +114,11 @@
          <height>30</height>
         </size>
        </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::NoContextMenu</enum>
+       </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton { min-height: 28px; min-width: 88px; }</string>
+        <string notr="true"/>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
