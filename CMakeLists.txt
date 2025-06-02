@@ -26,6 +26,8 @@ qt_add_executable(reversi WIN32 MACOSX_BUNDLE
     android/AndroidManifest.xml android/build.gradle android/res/values/libs.xml android/gradle/wrapper/gradle-wrapper.jar android/gradle/wrapper/gradle-wrapper.properties android/gradle.properties android/gradlew android/gradlew.bat
     reversiapp.qrc
     MANUAL_FINALIZATION
+    cgameoptions.h cgameoptions.cpp options.ui
+
 )
 
 # Link all required Qt libraries.
