@@ -4,7 +4,6 @@
 #pragma once
 
 #include <QDialog>
-#include <QtWidgets/qlistwidget.h>
 
 namespace Ui {
 class CGameOptions;
@@ -18,9 +17,12 @@ public:
     explicit CGameOptions(QWidget *parent = nullptr);
     ~CGameOptions();
 
+    QColor m_BoardColor = Qt::darkGreen;
 private:
     Ui::CGameOptions *ui;
-    QList<QListWidgetItem> m_colorList;
+
+    void applyChanges();
+    void cancelChanges();
 };
 
 #endif // CGAMEOPTIONS_H

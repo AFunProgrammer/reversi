@@ -38,7 +38,7 @@ void CReversiWidget::createBoard(QSize BoardSize)
     QPen boardPen = QPen(Qt::white);
     boardPen.setWidth(2);
     drawBoard.setPen(boardPen);
-    drawBoard.setBrush(QBrush(Qt::darkGreen));
+    drawBoard.setBrush(QBrush(m_BoardColor));
 
     for( int row = 0; row < BoardSize.height(); row++ ){
         for( int col = 0; col < BoardSize.width(); col++ ){
@@ -50,7 +50,9 @@ void CReversiWidget::createBoard(QSize BoardSize)
     drawBoard.end();
 
     m_Board = board;
+}
 
+void CReversiWidget::createPieces(){
     // Setup game pieces
     m_WhiteMove  = QPixmap(":/images/whitemove");
     m_WhitePiece = QPixmap(":/images/whitepiece");
@@ -61,7 +63,6 @@ void CReversiWidget::createBoard(QSize BoardSize)
     m_WhitePiece = m_WhitePiece.scaled(m_CellSize.toSize(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
     m_BlackMove  = m_BlackMove.scaled(m_CellSize.toSize(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
     m_BlackPiece = m_BlackPiece.scaled(m_CellSize.toSize(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
-
 }
 
 void CReversiWidget::drawGameOnBoard()
@@ -131,6 +132,20 @@ void CReversiWidget::setClearColor(QColor Color)
     m_ClearColor = Color;
 }
 
+void CReversiWidget::setBoardColor(QColor Color){
+    qDebug() << "Color is Valid: " << Color.isValid() << " Color Value: " << Color.rgb() << " Board Color: " << m_BoardColor.rgb();
+
+    if (Color.isValid() && Color.rgb() != m_BoardColor.rgb()){
+        m_BoardColor = Color;
+        // create a new square board after color update
+        createBoard(QSize(8,8));
+    }
+}
+
+QColor CReversiWidget::boardColor(){
+    return m_BoardColor;
+}
+
 QPoint CReversiWidget::lastClickedCell()
 {
     QPoint returnLastClickCell = m_LastClickCell;
@@ -147,6 +162,7 @@ void CReversiWidget::resizeEvent(QResizeEvent *event)
     QOpenGLWidget::resizeEvent(event);
     // create a new square board every time the widget changes size
     createBoard(QSize(8,8));
+    createPieces();
 }
 
 void CReversiWidget::mousePressEvent(QMouseEvent* event)

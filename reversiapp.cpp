@@ -177,6 +177,7 @@ void ReversiApp::updateGameOptions()
     CReversiGame* pGame = CReversiGame::getGlobalInstance();
 
     m_gameOptionsDlg.setModal(true);
+    m_gameOptionsDlg.m_BoardColor = ui->oglReversi->boardColor();
 
 #if defined(Q_OS_ANDROID)
     // Adjust the width to the screen width (or center in the screen)
@@ -184,8 +185,8 @@ void ReversiApp::updateGameOptions()
 #endif
     m_gameOptionsDlg.exec();
 
-
     // get the resulting data
+    ui->oglReversi->setBoardColor(m_gameOptionsDlg.m_BoardColor);
 }
 
 ReversiApp::ReversiApp(QWidget *parent)
