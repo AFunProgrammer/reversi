@@ -24,7 +24,7 @@ private:
     ReversiPlayer m_EditPlayer;
 
     void applyChanges();
-    void cancelChangers();
+    void cancelChanges();
 };
 
 #endif // CPLAYERSETTINGS_H

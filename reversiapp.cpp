@@ -172,6 +172,21 @@ void ReversiApp::updatePlayerSettings(eColor PlayerColor)
     }
 }
 
+void ReversiApp::updateGameOptions()
+{
+    CReversiGame* pGame = CReversiGame::getGlobalInstance();
+
+    m_gameOptionsDlg.setModal(true);
+
+#if defined(Q_OS_ANDROID)
+    // Adjust the width to the screen width (or center in the screen)
+    //fileDialog.setWindowState(Qt::WindowMaximized);
+#endif
+    m_gameOptionsDlg.exec();
+
+
+    // get the resulting data
+}
 
 ReversiApp::ReversiApp(QWidget *parent)
     : QMainWindow(parent)
@@ -195,6 +210,8 @@ ReversiApp::ReversiApp(QWidget *parent)
         pGame->startGame();
         m_gameStart = true;
     });
+
+    ui->btnOptions->connect(ui->btnOptions, &QPushButton::clicked, [this](){updateGameOptions();});
 
     // Set the initial players for startup of Player,Computer
     CReversiGame::getGlobalInstance()->setPlayerInfo(eColor::White, "Player", ePlayerType::Human);

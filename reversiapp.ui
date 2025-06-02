@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>382</width>
+    <width>393</width>
     <height>503</height>
    </rect>
   </property>
@@ -286,9 +286,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnSettings">
+       <widget class="QPushButton" name="btnOptions">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -310,7 +310,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Settings</string>
+         <string>Options</string>
         </property>
         <property name="flat">
          <bool>true</bool>

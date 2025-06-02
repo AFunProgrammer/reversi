@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QTimer>
 
+#include "cgameoptions.h"
 #include "cplayersettings.h"
 
 QT_BEGIN_NAMESPACE
@@ -25,9 +26,12 @@ private:
     Ui::ReversiApp *ui;
     QTimer m_gameTimer;
     CPlayerSettings m_playerSettingsDlg;
+    CGameOptions m_gameOptionsDlg;
+
 
     void selectNextMoveForComputer();
     void updatePlayerSettings(eColor PlayerColor);
+    void updateGameOptions();
     void updateUiForGameProgress();
 
     bool m_gameStart = false;

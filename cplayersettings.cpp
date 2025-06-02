@@ -16,7 +16,7 @@ CPlayerSettings::CPlayerSettings(QWidget *parent)
     ui->cboPlayerType->addItem(tr("Human"),     QVariant::fromValue(static_cast<int>(ePlayerType::Human)));
 
     ui->btnDialogBox->connect(ui->btnDialogBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, [this](){applyChanges();});
-    ui->btnDialogBox->connect(ui->btnDialogBox->button(QDialogButtonBox::Close), &QPushButton::clicked, [this](){cancelChangers();});
+    ui->btnDialogBox->connect(ui->btnDialogBox->button(QDialogButtonBox::Close), &QPushButton::clicked, [this](){cancelChanges();});
 }
 
 void CPlayerSettings::editPlayer(ReversiPlayer EditPlayer)
@@ -47,7 +47,7 @@ void CPlayerSettings::applyChanges()
     this->accept();
 }
 
-void CPlayerSettings::cancelChangers()
+void CPlayerSettings::cancelChanges()
 {
     qDebug() << "Cancel Changes Clicked";
 
