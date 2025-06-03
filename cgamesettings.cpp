@@ -1,19 +1,22 @@
-#include "cgameoptions.h"
-#include "ui_options.h"
+#include "cgamesettings.h"
+#include "csettings.h"
+#include "ui_gamesettings.h"
 
 #include <QColorDialog>
 #include <QMetaEnum>
 
-CGameOptions::CGameOptions(QWidget *parent)
+CGameSettings::CGameSettings(QWidget *parent)
     : QDialog(parent)
-    , ui(new Ui::CGameOptions)
+    , ui(new Ui::CGameSettings)
 {
+    CSettings* pSettings = CSettings::getGlobalInstance();
 
     ui->setupUi(this);
 
-    ui->ctlBoardColor->setStyleSheet(QString("background-color: %1").arg(m_BoardColor.name()));
+    ui->ctlBoardColor->setStyleSheet(QString("background-color: %1").arg(pSettings->boardColor().name()));
 
     ui->btnBoardColor->connect(ui->btnBoardColor, &QPushButton::clicked, [this](){
+        CSettings* pSettings = CSettings::getGlobalInstance();
         // Create a color dialog
         QColorDialog colorPicker(this);
         colorPicker.setOption(QColorDialog::NoButtons);         // Hide OK/Cancel buttons
@@ -32,28 +35,21 @@ CGameOptions::CGameOptions(QWidget *parent)
 
             // Set Control Color
             ui->ctlBoardColor->setStyleSheet(backgroundStyle);
-            m_BoardColor = color;
+            pSettings->setBoardColor(color);
         }
     });
 
-    ui->btnDialogBox->connect(ui->btnDialogBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, [this](){applyChanges();});
-    ui->btnDialogBox->connect(ui->btnDialogBox->button(QDialogButtonBox::Close), &QPushButton::clicked, [this](){cancelChanges();});
+    ui->btnDialogBox->connect(ui->btnDialogBox->button(QDialogButtonBox::Close), &QPushButton::clicked, [this](){applyChanges();});
 
 }
 
-void CGameOptions::applyChanges(){
-    qDebug() << "Cancel Changes Clicked";
+void CGameSettings::applyChanges(){
+    qDebug() << "Apply Changes Clicked";
 
-    this->reject();
+    this->accept();
 }
 
-void CGameOptions::cancelChanges(){
-    qDebug() << "Cancel Changes Clicked";
-
-    this->reject();
-}
-
-CGameOptions::~CGameOptions()
+CGameSettings::~CGameSettings()
 {
     delete ui;
 }
