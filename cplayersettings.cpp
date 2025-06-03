@@ -1,4 +1,5 @@
 #include "cplayersettings.h"
+#include "csettings.h"
 #include "ui_playersettings.h"
 
 #include <QDebug>
@@ -15,8 +16,7 @@ CPlayerSettings::CPlayerSettings(QWidget *parent)
     ui->cboPlayerType->addItem(tr("Computer"),  QVariant::fromValue(static_cast<int>(ePlayerType::Computer)));
     ui->cboPlayerType->addItem(tr("Human"),     QVariant::fromValue(static_cast<int>(ePlayerType::Human)));
 
-    ui->btnDialogBox->connect(ui->btnDialogBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, [this](){applyChanges();});
-    ui->btnDialogBox->connect(ui->btnDialogBox->button(QDialogButtonBox::Close), &QPushButton::clicked, [this](){cancelChanges();});
+    ui->btnDialogBox->connect(ui->btnDialogBox->button(QDialogButtonBox::Close), &QPushButton::clicked, [this](){applyChanges();});
 }
 
 void CPlayerSettings::editPlayer(ReversiPlayer EditPlayer)
@@ -34,24 +34,19 @@ void CPlayerSettings::editPlayer(ReversiPlayer EditPlayer)
 
 void CPlayerSettings::applyChanges()
 {
-    // Get the game to update the player data
-    CReversiGame* pGame = CReversiGame::getGlobalInstance();
+    // Get the settings to update them
+    CSettings* pSettings = CSettings::getGlobalInstance();
 
     QString updateName = ui->txtName->text();
     ePlayerType playerType = (ePlayerType)(ui->cboPlayerType->currentData().toInt());
 
-    pGame->setPlayerInfo(m_EditPlayer.m_PlayerColor, updateName, playerType);
+    // only update the settings and call game settings update after this dialog closes
+    pSettings->setPlayerName(m_EditPlayer.m_PlayerColor, updateName);
+    pSettings->setPlayerType(m_EditPlayer.m_PlayerColor, playerType);
 
     qDebug() << "Player Changes Applied for Player:" << (int)m_EditPlayer.m_PlayerColor << " Name: " << updateName << " Type: " << (int)playerType;
 
     this->accept();
-}
-
-void CPlayerSettings::cancelChanges()
-{
-    qDebug() << "Cancel Changes Clicked";
-
-    this->reject();
 }
 
 
