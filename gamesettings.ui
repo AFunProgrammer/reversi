@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>330</width>
-    <height>218</height>
+    <height>283</height>
    </rect>
   </property>
   <property name="font">
@@ -104,17 +104,38 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnBoardColor">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>10</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QLabel" name="lblFirstPlayerColor">
+       <property name="text">
+        <string>First Player Color</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnFirstPlayerColor">
        <property name="maximumSize">
         <size>
-         <width>50</width>
-         <height>16777215</height>
+         <width>64</width>
+         <height>64</height>
         </size>
        </property>
        <property name="text">
@@ -122,7 +143,7 @@
        </property>
        <property name="icon">
         <iconset resource="reversiapp.qrc">
-         <normaloff>:/images/tlb-colorwheel</normaloff>:/images/tlb-colorwheel</iconset>
+         <normaloff>:/images/glassbutton</normaloff>:/images/glassbutton</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -138,21 +159,48 @@
        </property>
       </widget>
      </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
      <item>
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+      <widget class="QLabel" name="lblSecondPlayerColor">
+       <property name="text">
+        <string>Second Player Color</string>
        </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Fixed</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnSecondPlayerColor">
+       <property name="maximumSize">
         <size>
-         <width>10</width>
-         <height>20</height>
+         <width>64</width>
+         <height>64</height>
         </size>
        </property>
-      </spacer>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="reversiapp.qrc">
+         <normaloff>:/images/glassbutton</normaloff>:/images/glassbutton</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>40</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

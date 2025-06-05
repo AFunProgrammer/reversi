@@ -9,7 +9,7 @@ set(CMAKE_AUTORCC ON)
 # Find all required Qt components.
 # Ensure all components you link are listed here.
 # Changed version to 6.7.3.
-find_package(Qt6 6.5.3 REQUIRED COMPONENTS Core Gui Widgets OpenGLWidgets Svg) # Added Widgets
+find_package(Qt6 6.5.3 REQUIRED COMPONENTS Core Gui Widgets OpenGLWidgets Svg Xml) # Added Widgets
 
 qt_standard_project_setup()
 
@@ -28,6 +28,9 @@ qt_add_executable(reversi WIN32 MACOSX_BUNDLE
     MANUAL_FINALIZATION
     cgamesettings.h cgamesettings.cpp gamesettings.ui
     csettings.h csettings.cpp
+    ceventfilter.h ceventfilter.cpp
+    utility.h
+    utility.cpp
 
 )
 
@@ -39,6 +42,7 @@ target_link_libraries(reversi PRIVATE
     Qt6::Widgets      # Necessary for .ui files
     Qt6::OpenGLWidgets
     Qt6::Svg          # Uncomment if you actually use the Svg module
+    Qt6::Xml
 )
 
 

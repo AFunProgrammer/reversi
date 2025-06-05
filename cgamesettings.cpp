@@ -4,6 +4,11 @@
 
 #include <QColorDialog>
 #include <QMetaEnum>
+#include <QtWidgets/qpushbutton.h>
+
+#include "ceventfilter.h"
+#include "utility.h"
+
 
 CGameSettings::CGameSettings(QWidget *parent)
     : QDialog(parent)
@@ -13,10 +18,13 @@ CGameSettings::CGameSettings(QWidget *parent)
 
     ui->setupUi(this);
 
+    // setup the Board Color control, including having a mouse click / touch filter
     ui->ctlBoardColor->setStyleSheet(QString("background-color: %1").arg(pSettings->boardColor().name()));
+    CEventFilter *clickFilter = new CEventFilter(ui->ctlBoardColor);
+    ui->ctlBoardColor->installEventFilter(clickFilter);
 
-    ui->btnBoardColor->connect(ui->btnBoardColor, &QPushButton::clicked, [this](){
-        CSettings* pSettings = CSettings::getGlobalInstance();
+    // Connect signal to a slot
+    QObject::connect(clickFilter, &CEventFilter::clicked, [this,pSettings]() {
         // Create a color dialog
         QColorDialog colorPicker(this);
         colorPicker.setOption(QColorDialog::NoButtons);         // Hide OK/Cancel buttons
@@ -26,19 +34,56 @@ CGameSettings::CGameSettings(QWidget *parent)
 
         if(color.isValid()) {
             qDebug() << "selected color: " << color;
-
-            // convert colors to strings for using in the style sheets
             QString colorName = color.name();
-
-            // Generate stylesheet string
             QString backgroundStyle = QString("background-color: %1;").arg(colorName);
-
-            // Set Control Color
             ui->ctlBoardColor->setStyleSheet(backgroundStyle);
             pSettings->setBoardColor(color);
         }
     });
 
+    // setup the Board Color control, including having a mouse click / touch filter
+    QPixmap firstPlayerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", pSettings->playerColor(eColor::White), QSize(40,40)));
+    ui->btnFirstPlayerColor->setIcon(QIcon(firstPlayerIcon));
+
+    // Connect signal to a slot
+    ui->btnFirstPlayerColor->connect(ui->btnFirstPlayerColor, &QPushButton::clicked, [this,pSettings]() {
+        // Create a color dialog
+        QColorDialog colorPicker(this);
+        colorPicker.setOption(QColorDialog::NoButtons);         // Hide OK/Cancel buttons
+        colorPicker.setOption(QColorDialog::DontUseNativeDialog);
+        // Show the dialog and get selected color
+        QColor color = QColorDialog::getColor(Qt::white, nullptr, "Select Color");
+
+        if(color.isValid()) {
+            qDebug() << "selected color: " << color;
+            QString colorName = color.name();
+            QPixmap firstPlayerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", color, QSize(40,40)));
+            ui->btnFirstPlayerColor->setIcon(QIcon(firstPlayerIcon));
+            pSettings->setPlayerColor(eColor::White, color);
+        }
+    });
+
+
+    QPixmap secondPlayerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", pSettings->playerColor(eColor::Black), QSize(40,40)));
+    ui->btnSecondPlayerColor->setIcon(QIcon(secondPlayerIcon));
+
+    // Connect signal to a slot
+    ui->btnSecondPlayerColor->connect(ui->btnSecondPlayerColor, &QPushButton::clicked, [this,pSettings]() {
+        // Create a color dialog
+        QColorDialog colorPicker(this);
+        colorPicker.setOption(QColorDialog::NoButtons);         // Hide OK/Cancel buttons
+        colorPicker.setOption(QColorDialog::DontUseNativeDialog);
+        // Show the dialog and get selected color
+        QColor color = QColorDialog::getColor(Qt::white, nullptr, "Select Color");
+
+        if(color.isValid()) {
+            qDebug() << "selected color: " << color;
+            QString colorName = color.name();
+            QPixmap secondPlayerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", color, QSize(40,40)));
+            ui->btnSecondPlayerColor->setIcon(QIcon(secondPlayerIcon));
+            pSettings->setPlayerColor(eColor::Black, color);
+        }
+    });
     ui->btnDialogBox->connect(ui->btnDialogBox->button(QDialogButtonBox::Close), &QPushButton::clicked, [this](){applyChanges();});
 
 }

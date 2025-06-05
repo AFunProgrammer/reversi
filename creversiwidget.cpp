@@ -13,7 +13,10 @@
 #include <QRandomGenerator>
 #include <QTimer>
 
+#include <QColor>
+
 #include "creversigame.h"
+#include "utility.h"
 
 CReversiWidget::CReversiWidget(QWidget* parent) : QOpenGLWidget{parent}
 {
@@ -54,15 +57,10 @@ void CReversiWidget::createBoard(QSize BoardSize)
 
 void CReversiWidget::createPieces(){
     // Setup game pieces
-    m_WhiteMove  = QPixmap(":/images/whitemove");
-    m_WhitePiece = QPixmap(":/images/whitepiece");
-    m_BlackMove  = QPixmap(":/images/blackmove");
-    m_BlackPiece = QPixmap(":/images/blackpiece");
-
-    m_WhiteMove  = m_WhiteMove.scaled(m_CellSize.toSize(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
-    m_WhitePiece = m_WhitePiece.scaled(m_CellSize.toSize(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
-    m_BlackMove  = m_BlackMove.scaled(m_CellSize.toSize(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
-    m_BlackPiece = m_BlackPiece.scaled(m_CellSize.toSize(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
+    m_firstPlayerPiece = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", m_firstPlayerColor, QSize(128,128)));
+    m_secondPlayerPiece = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", m_secondPlayerColor, QSize(128,128)));
+    m_firstPlayerMove = QPixmap::fromImage(createColoredMovePiece(":/images/flatmove", m_firstPlayerColor, QSize(128,128)));
+    m_secondPlayerMove = QPixmap::fromImage(createColoredMovePiece(":/images/flatmove", m_secondPlayerColor, QSize(128,128)));
 }
 
 void CReversiWidget::drawGameOnBoard()
@@ -86,9 +84,9 @@ void CReversiWidget::drawGameOnBoard()
                 int col = Col.m_Spot.x();
                 QRectF drawRect = QRectF(QPointF(col * m_CellSize.width(), row * m_CellSize.height()), m_CellSize);
                 if ( Col.m_SpotColor == eColor::White ){
-                    paintGameBoard.drawPixmap(drawRect.toRect(), m_WhitePiece);
+                    paintGameBoard.drawPixmap(drawRect.toRect(), m_firstPlayerPiece);
                 } else {
-                    paintGameBoard.drawPixmap(drawRect.toRect(), m_BlackPiece);
+                    paintGameBoard.drawPixmap(drawRect.toRect(), m_secondPlayerPiece);
                 }
             }
         }
@@ -107,9 +105,9 @@ void CReversiWidget::drawGameOnBoard()
 
         QRectF drawRect = QRectF(origin, m_CellSize / 2);
         if ( currentPlayer == eColor::White ){
-            paintGameBoard.drawPixmap(drawRect.toRect(), m_WhiteMove);
+            paintGameBoard.drawPixmap(drawRect.toRect(), m_firstPlayerMove);
         } else {
-            paintGameBoard.drawPixmap(drawRect.toRect(), m_BlackMove);
+            paintGameBoard.drawPixmap(drawRect.toRect(), m_secondPlayerMove);
         }
     }
 
@@ -145,6 +143,36 @@ void CReversiWidget::setBoardColor(QColor Color){
 QColor CReversiWidget::boardColor(){
     return m_BoardColor;
 }
+
+void CReversiWidget::setPlayerColor(int Player, QColor Color){
+    bool colorChanged = false;
+    if (Player == 0){
+        if ( Color.rgb() != m_firstPlayerColor.rgb() )
+            colorChanged = true;
+
+        m_firstPlayerColor = (Color.isValid() ? Color : Qt::white);
+    }
+    else if (Player == 1) {
+        if ( Color.rgb() != m_secondPlayerColor.rgb() )
+            colorChanged = true;
+
+        m_secondPlayerColor = (Color.isValid() ? Color : Qt::black);
+    }
+
+
+    if (colorChanged) {
+        createPieces();
+    }
+}
+
+QColor CReversiWidget::playerColor(int Player){
+    if (Player == 0)
+        return m_firstPlayerColor;
+    else
+        return m_secondPlayerColor;
+
+}
+
 
 QPoint CReversiWidget::lastClickedCell()
 {

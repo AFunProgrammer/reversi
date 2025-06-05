@@ -2,12 +2,74 @@
 #include "ui_reversiapp.h"
 
 #include "creversigame.h"
+#include "utility.h"
 
 #include <QDebug>
 #include <QMessageBox>
 #include <QTimer>
 #include <QRandomGenerator>
 #include <QREsource>
+
+void ReversiApp::updateGameSettings()
+{
+    CReversiGame* pGame = CReversiGame::getGlobalInstance();
+    CReversiWidget* pGameBoard = ui->oglReversi;
+    CSettings* pSettings = CSettings::getGlobalInstance();
+
+    for (int i=0; i<pSettings->numberOfPlayers(); i++){
+        pGame->setPlayerInfo(eColor(i), pSettings->playerName(eColor(i)), pSettings->playerType(eColor(i)));
+    }
+
+    pGameBoard->setBoardColor(pSettings->boardColor());
+
+    pGameBoard->setPlayerColor(0,pSettings->playerColor(eColor::White));
+    pGameBoard->setPlayerColor(1,pSettings->playerColor(eColor::Black));
+
+    QPixmap firstPlayerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", pSettings->playerColor(eColor::White), QSize(16,16)));
+    QPixmap secondPlayerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", pSettings->playerColor(eColor::Black), QSize(16,16)));
+
+    // Set player colored icons
+    ui->btnWhite->setIcon(QIcon(firstPlayerIcon));
+    ui->btnBlack->setIcon(QIcon(secondPlayerIcon));
+
+    // Set the initial players for startup of Player,Computer
+    ui->btnWhite->setText(pSettings->playerName(eColor::White));
+    ui->btnBlack->setText(pSettings->playerName(eColor::Black));
+}
+
+void ReversiApp::showGameSettings()
+{
+    CReversiGame* pGame = CReversiGame::getGlobalInstance();
+
+    m_gameOptionsDlg.setModal(true);
+
+#if defined(Q_OS_ANDROID)
+    // Adjust the width to the screen width (or center in the screen)
+    //fileDialog.setWindowState(Qt::WindowMaximized);
+#endif
+    m_gameOptionsDlg.exec();
+
+    // get the resulting data
+    updateGameSettings();
+}
+
+void ReversiApp::showPlayerSettings(eColor PlayerColor)
+{
+    CReversiGame* pGame = CReversiGame::getGlobalInstance();
+
+    m_playerSettingsDlg.editPlayer(pGame->getPlayer(PlayerColor));
+    m_playerSettingsDlg.setModal(true);
+
+#if defined(Q_OS_ANDROID)
+    // Adjust the width to the screen width (or center in the screen)
+    //fileDialog.setWindowState(Qt::WindowMaximized);
+#endif
+    m_playerSettingsDlg.exec();
+
+    int result = m_playerSettingsDlg.result();
+
+    updateGameSettings();
+}
 
 void announceWinner(QWidget* parent)
 {
@@ -134,58 +196,6 @@ void ReversiApp::updateUiForGameProgress()
     ui->oglReversi->update();
 }
 
-void ReversiApp::updatePlayerSettings(eColor PlayerColor)
-{
-    CReversiGame* pGame = CReversiGame::getGlobalInstance();
-
-    m_playerSettingsDlg.editPlayer(pGame->getPlayer(PlayerColor));
-    m_playerSettingsDlg.setModal(true);
-
-#if defined(Q_OS_ANDROID)
-    // Adjust the width to the screen width (or center in the screen)
-    //fileDialog.setWindowState(Qt::WindowMaximized);
-#endif
-    m_playerSettingsDlg.exec();
-
-    int result = m_playerSettingsDlg.result();
-
-    updateGameSettings();
-}
-
-void ReversiApp::updateGameSettings()
-{
-    CReversiGame* pGame = CReversiGame::getGlobalInstance();
-    CReversiWidget* pGameBoard = ui->oglReversi;
-    CSettings* pSettings = CSettings::getGlobalInstance();
-
-    for (int i=0; i<pSettings->numberOfPlayers(); i++){
-        pGame->setPlayerInfo(eColor(i), pSettings->playerName(eColor(i)), pSettings->playerType(eColor(i)));
-    }
-
-    pGameBoard->setBoardColor(pSettings->boardColor());
-
-    // Set the initial players for startup of Player,Computer
-    ui->btnWhite->setText(pSettings->playerName(eColor::White));
-    ui->btnBlack->setText(pSettings->playerName(eColor::Black));
-}
-
-
-void ReversiApp::showGameOptions()
-{
-    CReversiGame* pGame = CReversiGame::getGlobalInstance();
-
-    m_gameOptionsDlg.setModal(true);
-
-#if defined(Q_OS_ANDROID)
-    // Adjust the width to the screen width (or center in the screen)
-    //fileDialog.setWindowState(Qt::WindowMaximized);
-#endif
-    m_gameOptionsDlg.exec();
-
-    // get the resulting data
-    updateGameSettings();
-}
-
 ReversiApp::ReversiApp(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::ReversiApp)
@@ -199,8 +209,8 @@ ReversiApp::ReversiApp(QWidget *parent)
 
     // Setup Buttons
     ui->btnClose->connect(ui->btnClose, &QPushButton::clicked, qApp, &QCoreApplication::quit);
-    ui->btnWhite->connect(ui->btnWhite, &QPushButton::clicked, [this](){updatePlayerSettings(eColor::White);});
-    ui->btnBlack->connect(ui->btnBlack, &QPushButton::clicked, [this](){updatePlayerSettings(eColor::Black);});
+    ui->btnWhite->connect(ui->btnWhite, &QPushButton::clicked, [this](){showPlayerSettings(eColor::White);});
+    ui->btnBlack->connect(ui->btnBlack, &QPushButton::clicked, [this](){showPlayerSettings(eColor::Black);});
 
     ui->btnStart->connect(ui->btnStart, &QPushButton::clicked, [this](){
         // Setup Game
@@ -209,7 +219,7 @@ ReversiApp::ReversiApp(QWidget *parent)
         m_gameStart = true;
     });
 
-    ui->btnOptions->connect(ui->btnOptions, &QPushButton::clicked, [this](){showGameOptions();});
+    ui->btnSettings->connect(ui->btnSettings, &QPushButton::clicked, [this](){showGameSettings();});
 
 
     // make sure all settings are updated to start initially
