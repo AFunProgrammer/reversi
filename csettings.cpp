@@ -20,6 +20,17 @@ QColor CSettings::boardColor(){
     return m_boardColor;
 }
 
+
+// Player Colors
+void CSettings::setPlayerColor(eColor playerColor, QColor Color) {
+    m_playerColors[static_cast<int>(playerColor)] = Color;
+}
+
+QColor CSettings::playerColor(eColor playerColor) {
+    return m_playerColors[static_cast<int>(playerColor)];
+}
+
+
 // Player Names
 void CSettings::setPlayerName(eColor playerColor, QString playerName){
     m_playerNames[static_cast<int>(playerColor)] = playerName;

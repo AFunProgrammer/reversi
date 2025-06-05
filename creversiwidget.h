@@ -22,6 +22,9 @@ public:
     void setBoardColor(QColor Color);
     QColor boardColor();
 
+    void setPlayerColor(int Player, QColor Color);
+    QColor playerColor(int Player);
+
     void mousePressEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
@@ -41,10 +44,13 @@ private:
     QPoint m_LastClickCell = QPoint(-1,-1);
 
     QPixmap m_GameBoard;
-    QPixmap m_WhiteMove;
-    QPixmap m_WhitePiece;
-    QPixmap m_BlackMove;
-    QPixmap m_BlackPiece;
+    QPixmap m_firstPlayerMove;
+    QPixmap m_firstPlayerPiece;
+    QPixmap m_secondPlayerMove;
+    QPixmap m_secondPlayerPiece;
+
+    QColor m_firstPlayerColor = Qt::white;
+    QColor m_secondPlayerColor = Qt::black;
 
     void createBoard(QSize BoardSize /* typically 8x8 */);
     void createPieces();

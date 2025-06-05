@@ -547,7 +547,7 @@
         </property>
         <property name="icon">
          <iconset resource="reversiapp.qrc">
-          <normaloff>:/images/whitepiece</normaloff>:/images/whitepiece</iconset>
+          <normaloff>:/images/glassbutton</normaloff>:/images/glassbutton</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -621,7 +621,7 @@
         </property>
         <property name="icon">
          <iconset resource="reversiapp.qrc">
-          <normaloff>:/images/blackpiece</normaloff>:/images/blackpiece</iconset>
+          <normaloff>:/images/glassbutton</normaloff>:/images/glassbutton</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -709,7 +709,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnOptions">
+       <widget class="QPushButton" name="btnSettings">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -733,7 +733,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Options</string>
+         <string>Settings</string>
         </property>
         <property name="flat">
          <bool>true</bool>

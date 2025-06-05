@@ -18,6 +18,9 @@ public:
     void setBoardColor(QColor Color);
     QColor boardColor();
 
+    void setPlayerColor(eColor playerColor, QColor Color);
+    QColor playerColor(eColor playerColor);
+
     void setPlayerName(eColor playerColor, QString playerName);
     QString playerName(eColor playerColor);
 
@@ -35,6 +38,7 @@ public:
 private:
     QColor m_boardColor = Qt::darkGreen;
 
+    QList<QColor> m_playerColors = QList<QColor>({Qt::white,Qt::black});
     QList<QString> m_playerNames = QList<QString>({"Player","Computer"});
     QList<ePlayerType> m_playerType = QList<ePlayerType>({ePlayerType::Human,ePlayerType::Computer});
 
