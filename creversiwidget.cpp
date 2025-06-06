@@ -234,7 +234,7 @@ QRect CReversiWidget::convertCellToRect(QPoint Cell)
 void CReversiWidget::drawLastMoveIndicator(QPainter* Painter)
 {
     ReversiSpot lastMove = CReversiGame::getGlobalInstance()->getLastMove();
-    QColor lastMoveColor = (lastMove.m_SpotColor == eColor::White ? Qt::white : Qt::black);
+    QColor lastMoveColor = (lastMove.m_SpotColor == eColor::White ? m_firstPlayerColor : m_secondPlayerColor);
 
     static float opacity = 0.3f;
     static bool increase = true;

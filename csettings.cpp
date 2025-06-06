@@ -66,3 +66,16 @@ void CSettings::setNumberOfPlayers(int players){
 int CSettings::numberOfPlayers(){
     return m_numberOfPlayers;
 }
+
+// Reset the settings
+void CSettings::resetSettings(){
+    m_boardColor = Qt::darkGreen;
+
+    m_playerColors = QList<QColor>({Qt::white, Qt::black});
+    m_playerNames = QList<QString>({"Player", "Computer"});
+    m_playerType = QList<ePlayerType>({ePlayerType::Human, ePlayerType::Computer});
+
+    m_difficulty = 1; //place holder for something more constructive later
+
+    m_numberOfPlayers = 2; // this probably will never change but useful to have...
+}
