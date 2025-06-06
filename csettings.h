@@ -33,6 +33,8 @@ public:
     void setNumberOfPlayers(int players);
     int numberOfPlayers();
 
+
+    void resetSettings();
     // have a single global instance
     static CSettings* getGlobalInstance();
 private:

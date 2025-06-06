@@ -16,6 +16,8 @@ public:
     explicit CGameSettings(QWidget *parent = nullptr);
     ~CGameSettings();
 
+protected:
+    void showEvent(QShowEvent *event) override;
 
 private:
     Ui::CGameSettings *ui;

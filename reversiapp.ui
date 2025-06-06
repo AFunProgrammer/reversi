@@ -482,7 +482,8 @@
   <property name="font">
    <font>
     <family>Comic Sans MS</family>
-    <pointsize>20</pointsize>
+    <pointsize>24</pointsize>
+    <bold>true</bold>
    </font>
   </property>
   <property name="windowTitle">
@@ -535,13 +536,6 @@
           <height>0</height>
          </size>
         </property>
-        <property name="font">
-         <font>
-          <family>Comic Sans MS</family>
-          <pointsize>18</pointsize>
-          <bold>true</bold>
-         </font>
-        </property>
         <property name="text">
          <string>White</string>
         </property>
@@ -561,12 +555,6 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <family>Comic Sans MS</family>
-          <pointsize>20</pointsize>
-         </font>
         </property>
         <property name="frameShape">
          <enum>QFrame::NoFrame</enum>
@@ -609,13 +597,6 @@
           <height>40</height>
          </size>
         </property>
-        <property name="font">
-         <font>
-          <family>Comic Sans MS</family>
-          <pointsize>18</pointsize>
-          <bold>true</bold>
-         </font>
-        </property>
         <property name="text">
          <string>Black</string>
         </property>
@@ -640,6 +621,7 @@
          <font>
           <family>Comic Sans MS</family>
           <pointsize>20</pointsize>
+          <bold>true</bold>
          </font>
         </property>
         <property name="frameShape">
@@ -693,13 +675,6 @@
           <height>30</height>
          </size>
         </property>
-        <property name="font">
-         <font>
-          <family>Comic Sans MS</family>
-          <pointsize>20</pointsize>
-          <bold>true</bold>
-         </font>
-        </property>
         <property name="text">
          <string>Start</string>
         </property>
@@ -725,13 +700,6 @@
           <height>30</height>
          </size>
         </property>
-        <property name="font">
-         <font>
-          <family>Comic Sans MS</family>
-          <pointsize>20</pointsize>
-          <bold>true</bold>
-         </font>
-        </property>
         <property name="text">
          <string>Settings</string>
         </property>
@@ -753,13 +721,6 @@
           <width>0</width>
           <height>30</height>
          </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Comic Sans MS</family>
-          <pointsize>20</pointsize>
-          <bold>true</bold>
-         </font>
         </property>
         <property name="text">
          <string>Close</string>
