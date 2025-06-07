@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>323</width>
-    <height>222</height>
+    <width>277</width>
+    <height>204</height>
    </rect>
   </property>
   <property name="font">
@@ -17,7 +17,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Player Setting</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0" colspan="2">
@@ -149,8 +149,8 @@
       <widget class="QPushButton" name="btnColor">
        <property name="maximumSize">
         <size>
-         <width>64</width>
-         <height>64</height>
+         <width>40</width>
+         <height>40</height>
         </size>
        </property>
        <property name="text">
@@ -162,8 +162,8 @@
        </property>
        <property name="iconSize">
         <size>
-         <width>40</width>
-         <height>40</height>
+         <width>36</width>
+         <height>36</height>
         </size>
        </property>
        <property name="autoDefault">

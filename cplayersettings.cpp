@@ -32,7 +32,7 @@ CPlayerSettings::CPlayerSettings(QWidget *parent)
         if(color.isValid()) {
             qDebug() << "selected color: " << color;
             QString colorName = color.name();
-            QPixmap playerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", color, QSize(40,40)));
+            QPixmap playerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", color, QSize(36,36)));
             ui->btnColor->setIcon(QIcon(playerIcon));
             pSettings->setPlayerColor(m_EditPlayer.m_PlayerColor, color);
         }
