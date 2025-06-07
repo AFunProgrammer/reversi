@@ -21,6 +21,7 @@ protected:
 
 private:
     Ui::CGameSettings *ui;
+    void setCtlsToGameSettings();
 
 
     void applyChanges();
