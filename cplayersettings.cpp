@@ -38,7 +38,7 @@ CPlayerSettings::CPlayerSettings(QWidget *parent)
         }
     });
 
-    ui->btnDialogBox->connect(ui->btnDialogBox->button(QDialogButtonBox::Close), &QPushButton::clicked, [this](){applyChanges();});
+    ui->btnClose->connect(ui->btnClose, &QPushButton::clicked, [this](){applyChanges();});
 }
 
 void CPlayerSettings::editPlayer(ReversiPlayer EditPlayer)

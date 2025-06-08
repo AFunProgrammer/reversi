@@ -66,8 +66,6 @@ void ReversiApp::showPlayerSettings(eColor PlayerColor)
 #endif
     m_playerSettingsDlg.exec();
 
-    int result = m_playerSettingsDlg.result();
-
     updateGameSettings();
 }
 
