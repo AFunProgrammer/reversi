@@ -68,32 +68,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="btnDialogBox">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+      <widget class="QPushButton" name="btnClose">
+       <property name="text">
+        <string>Close</string>
        </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
-       <property name="contextMenuPolicy">
-        <enum>Qt::NoContextMenu</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="standardButtons">
-        <set>QDialogButtonBox::Close</set>
-       </property>
-       <property name="centerButtons">
+       <property name="flat">
         <bool>false</bool>
        </property>
       </widget>
@@ -181,38 +163,5 @@
  <resources>
   <include location="reversiapp.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>btnDialogBox</sender>
-   <signal>accepted()</signal>
-   <receiver>CPlayerSettings</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btnDialogBox</sender>
-   <signal>rejected()</signal>
-   <receiver>CPlayerSettings</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
