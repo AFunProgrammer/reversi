@@ -27,7 +27,7 @@ bool CReversiGame::addPlayer(QString PlayerName, ePlayerType PlayerType)
 
     // Create and assign new player data
     ReversiPlayer addPlayer;
-    addPlayer.m_PlayerColor = (eColor)(m_Players.count());
+    addPlayer.m_Player = (ePlayer)(m_Players.count());
     addPlayer.m_PlayerName = PlayerName;
     addPlayer.m_PlayerType = PlayerType;
 
@@ -37,14 +37,14 @@ bool CReversiGame::addPlayer(QString PlayerName, ePlayerType PlayerType)
     return true;
 }
 
-eColor m_PlayerColor = eColor::None;
+ePlayer m_PlayerColor = ePlayer::None;
 QString m_PlayerName = "";
 ePlayerType m_PlayerType = ePlayerType::Observer;
 // get the player information to be adjusted
-ReversiPlayer CReversiGame::getPlayer(eColor PlayerColor)
+ReversiPlayer CReversiGame::getPlayer(ePlayer PlayerColor)
 {
     for ( ReversiPlayer player: m_Players ){
-        if ( player.m_PlayerColor == PlayerColor ){
+        if ( player.m_Player == PlayerColor ){
             return player;
         }
     }
@@ -58,15 +58,15 @@ ReversiPlayer CReversiGame::getPlayer(eColor PlayerColor)
 // set the player information that was needed to be adjusted (Color selects which
 //   player is to be adjusted [either white or black]
 // RETURNS true if set, otherwise false
-bool CReversiGame::setPlayerInfo(eColor PlayerColor, QString PlayerName, ePlayerType PlayerType)
+bool CReversiGame::setPlayerInfo(ePlayer PlayerColor, QString PlayerName, ePlayerType PlayerType)
 {
     for ( int Player = 0; Player < m_Players.count(); Player++ ){
-        if (m_Players[Player].m_PlayerColor == PlayerColor ){
+        if (m_Players[Player].m_Player == PlayerColor ){
             m_Players[Player].m_PlayerName = PlayerName;
             m_Players[Player].m_PlayerType = PlayerType;
 
             // also check to see if the current player's turn
-            if ( m_PlayerTurn.m_PlayerColor == PlayerColor ){
+            if ( m_PlayerTurn.m_Player == PlayerColor ){
                 m_PlayerTurn.m_PlayerName = PlayerName;
                 m_PlayerTurn.m_PlayerType = PlayerType;
             }
@@ -87,7 +87,7 @@ bool CReversiGame::makeMove(QPoint Spot)
     }
 
     ReversiSpot move;
-    move.m_SpotColor = m_PlayerTurn.m_PlayerColor;
+    move.m_CapturedBy = m_PlayerTurn.m_Player;
     move.m_Spot = Spot;
     move.m_ChangedOnMove = m_Moves.count() + 1; // 1 based instead of 0 for moves
 
@@ -102,7 +102,7 @@ bool CReversiGame::makeMove(QPoint Spot)
     updateBoard();
 
     // change the player to the next player (should only be 2 players)
-    if ( m_PlayerTurn.m_PlayerColor == m_Players[0].m_PlayerColor ){
+    if ( m_PlayerTurn.m_Player == m_Players[0].m_Player ){
         m_PlayerTurn = m_Players[1];
     } else {
         m_PlayerTurn = m_Players[0];
@@ -120,9 +120,9 @@ ReversiPlayer CReversiGame::getPlayerTurn()
 // attempt to change move to next player because there aren't any valid moves found
 bool CReversiGame::setNextTurnFromNoValidMoves()
 {
-    if ( getValidMoves(m_PlayerTurn.m_PlayerColor).count() == 0 ){
+    if ( getValidMoves(m_PlayerTurn.m_Player).count() == 0 ){
         // change the player to the next player (should only be 2 players)
-        if ( m_PlayerTurn.m_PlayerColor == m_Players[0].m_PlayerColor ){
+        if ( m_PlayerTurn.m_Player == m_Players[0].m_Player ){
             m_PlayerTurn = m_Players[1];
         } else {
             m_PlayerTurn = m_Players[0];
@@ -138,10 +138,10 @@ bool CReversiGame::setNextTurnFromNoValidMoves()
 
 
 // get a list of valid movies
-QList<QPoint> CReversiGame::getValidMoves(eColor PlayerColor)
+QList<QPoint> CReversiGame::getValidMoves(ePlayer PlayerColor)
 {
     static QList<QPoint> validMoves;
-    static eColor lastColorRequest = eColor::None;
+    static ePlayer lastColorRequest = ePlayer::None;
     static int lastMoveNumber = -1;
 
     // calculating moves is expensive, so avoid doing it if possible
@@ -156,18 +156,18 @@ QList<QPoint> CReversiGame::getValidMoves(eColor PlayerColor)
 
     QSet<ReversiSpot*> Locations;
     // looking for the color of the opposite player to get spots to move in to
-    eColor lookForColor = (PlayerColor == eColor::Black ? eColor::White : eColor::Black);
+    ePlayer lookForColor = (PlayerColor == ePlayer::Second ? ePlayer::First : ePlayer::Second);
 
     // cycle through the entire board
     for ( QList<ReversiSpot> row: m_Board ){
         for ( ReversiSpot col: row ){
             // check for any opposite color piece
-            if ( col.m_SpotColor == lookForColor ){
+            if ( col.m_CapturedBy == lookForColor ){
                 QList<ReversiSpot*> adjacent = getPrincipalWinds(col);
 
                 // now check for any open spots next to that piece
                 for ( ReversiSpot* spot: adjacent ){
-                    if ( spot->m_SpotColor == eColor::None )
+                    if ( spot->m_CapturedBy == ePlayer::None )
                         Locations.insert(spot);
                 }
             }
@@ -192,7 +192,7 @@ bool CReversiGame::isValidMove(ReversiSpot Spot)
 {
     ReversiSpot DesiredSpot = m_Board[Spot.m_Spot.y()][Spot.m_Spot.x()];
     // check to see if spot is used
-    if ( DesiredSpot.m_SpotColor != eColor::None ){
+    if ( DesiredSpot.m_CapturedBy != ePlayer::None ){
         return false;
     }
 
@@ -200,7 +200,7 @@ bool CReversiGame::isValidMove(ReversiSpot Spot)
     QList<ReversiSpot*> adjacentSpots = getPrincipalWinds(Spot);
     bool bOppositeNotFound = true;
     for ( ReversiSpot* spot: adjacentSpots ){
-        if ( spot->m_SpotColor != eColor::None && spot->m_SpotColor != Spot.m_SpotColor ){
+        if ( spot->m_CapturedBy != ePlayer::None && spot->m_CapturedBy != Spot.m_CapturedBy ){
             bOppositeNotFound = false;
         }
     }
@@ -229,32 +229,32 @@ bool CReversiGame::isValidMove(ReversiSpot Spot)
 ReversiSpot CReversiGame::getLastMove()
 {
     if ( m_Moves.count() == 0 ){
-        return {eColor::None,QPoint(-1,-1),-1};
+        return {ePlayer::None,QPoint(-1,-1),-1};
     }
 
     return m_Moves[m_Moves.count()-1];
 }
 
 // get the last move that a player made
-ReversiSpot CReversiGame::getLastMove(eColor Color)
+ReversiSpot CReversiGame::getLastMove(ePlayer Color)
 {
     if ( m_Moves.count() == 0 ){
-        return {eColor::None,QPoint(-1,-1),-1};
+        return {ePlayer::None,QPoint(-1,-1),-1};
     }
 
-    if ( m_Moves.count() == 1 && m_Moves[m_Moves.count()-1].m_SpotColor != Color ){
-        return {eColor::None,QPoint(-1,-1),-1};
+    if ( m_Moves.count() == 1 && m_Moves[m_Moves.count()-1].m_CapturedBy != Color ){
+        return {ePlayer::None,QPoint(-1,-1),-1};
     }
 
     int lastMove = m_Moves.count() - 1;
     while ( lastMove >= 0 ){
-        if ( m_Moves[lastMove].m_SpotColor == Color ){
+        if ( m_Moves[lastMove].m_CapturedBy == Color ){
             return m_Moves[lastMove];
         }
         lastMove--;
     }
 
-    return {eColor::None,QPoint(-1,-1),-1};
+    return {ePlayer::None,QPoint(-1,-1),-1};
 }
 
 // get all moves made
@@ -264,12 +264,12 @@ QList<ReversiSpot> CReversiGame::getMoves()
 }
 
 // get all moves made by a player
-QList<ReversiSpot> CReversiGame::getMoves(eColor Color)
+QList<ReversiSpot> CReversiGame::getMoves(ePlayer Color)
 {
     QList<ReversiSpot> moves;
 
     for( ReversiSpot move: m_Moves ){
-        if ( move.m_SpotColor == Color ){
+        if ( move.m_CapturedBy == Color ){
             moves.append(move);
         }
     }
@@ -286,14 +286,14 @@ QList<QList<ReversiSpot>> CReversiGame::getGameBoard()
 
 
 // get the current score for a player
-int CReversiGame::getPlayerScore(eColor Color)
+int CReversiGame::getPlayerScore(ePlayer Color)
 {
     int score = 0;
     // cycle through the entire board
     for ( QList<ReversiSpot> row: m_Board ){
         for ( ReversiSpot col: row ){
             // check for color piece
-            if ( col.m_SpotColor == Color ){
+            if ( col.m_CapturedBy == Color ){
                 score++;
             }
         }
@@ -346,9 +346,9 @@ QList<int> CReversiGame::getNearestSameColor(ReversiSpot Spot, QList<ReversiSpot
     for ( int i = pos-1; i >= 0; i-- ){
         if ( i >= Line.count() )
             break;
-        if(Line[i]->m_SpotColor == eColor::None){
+        if(Line[i]->m_CapturedBy == ePlayer::None){
             break;
-        } else if (Line[i]->m_SpotColor == Spot.m_SpotColor || Line[i]->m_SpotColor == eColor::None){
+        } else if (Line[i]->m_CapturedBy == Spot.m_CapturedBy || Line[i]->m_CapturedBy == ePlayer::None){
             nearBehind = i+1;
             break;
         }
@@ -358,9 +358,9 @@ QList<int> CReversiGame::getNearestSameColor(ReversiSpot Spot, QList<ReversiSpot
     for ( int i = pos+1; i <= Line.count(); i++ ){
         if ( i >= Line.count() )
             break;
-        if(Line[i]->m_SpotColor == eColor::None){
+        if(Line[i]->m_CapturedBy == ePlayer::None){
             break;
-        } else if (Line[i]->m_SpotColor == Spot.m_SpotColor){
+        } else if (Line[i]->m_CapturedBy == Spot.m_CapturedBy){
             nearForward = i-1;
             break;
         }
@@ -497,7 +497,7 @@ void CReversiGame::createBoard()
     for ( int row = 0; row < m_BoardSize.height(); row++ ){
         m_Board.push_back(QList<ReversiSpot>());
         for ( int col = 0; col < m_BoardSize.width(); col++ ){
-            ReversiSpot spot = {eColor::None, QPoint(col,row), -1};
+            ReversiSpot spot = {ePlayer::None, QPoint(col,row), -1};
             m_Board[row].push_back(spot);
         }
     }
@@ -507,10 +507,10 @@ void CReversiGame::createBoard()
     // black, white
     int cRow = m_BoardSize.height() / 2;
     int cCol = m_BoardSize.width() / 2;
-    m_Board[cRow-1][cCol-1].m_SpotColor = eColor::White;
-    m_Board[cRow-1][cCol].m_SpotColor = eColor::Black;
-    m_Board[cRow][cCol-1].m_SpotColor = eColor::Black;
-    m_Board[cRow][cCol].m_SpotColor = eColor::White;
+    m_Board[cRow-1][cCol-1].m_CapturedBy = ePlayer::First;
+    m_Board[cRow-1][cCol].m_CapturedBy = ePlayer::Second;
+    m_Board[cRow][cCol-1].m_CapturedBy = ePlayer::Second;
+    m_Board[cRow][cCol].m_CapturedBy = ePlayer::First;
 
 }
 
@@ -525,7 +525,7 @@ void CReversiGame::updateBoard()
 
         if ( idxList.count() > 0 ){
             for ( int i = idxList[0]; i <= idxList[1]; i++ ){
-                line[i]->m_SpotColor = lastMove.m_SpotColor;
+                line[i]->m_CapturedBy = lastMove.m_CapturedBy;
                 line[i]->m_ChangedOnMove = moveNumber;
             }
         }

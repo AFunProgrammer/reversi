@@ -79,11 +79,11 @@ void CReversiWidget::drawGameOnBoard()
     // Draw Each Cell That Isn't eColor::None
     for ( QList<ReversiSpot> Row: gameBoard ){
         for ( ReversiSpot Col: Row ){
-            if ( Col.m_SpotColor != eColor::None ){
+            if ( Col.m_CapturedBy != ePlayer::None ){
                 int row = Col.m_Spot.y();
                 int col = Col.m_Spot.x();
                 QRectF drawRect = QRectF(QPointF(col * m_CellSize.width(), row * m_CellSize.height()), m_CellSize);
-                if ( Col.m_SpotColor == eColor::White ){
+                if ( Col.m_CapturedBy == ePlayer::First ){
                     paintGameBoard.drawPixmap(drawRect.toRect(), m_firstPlayerPiece);
                 } else {
                     paintGameBoard.drawPixmap(drawRect.toRect(), m_secondPlayerPiece);
@@ -93,7 +93,7 @@ void CReversiWidget::drawGameOnBoard()
     }
 
     // Draw Next Valid Move For Current Player
-    eColor currentPlayer = pGame->getPlayerTurn().m_PlayerColor;
+    ePlayer currentPlayer = pGame->getPlayerTurn().m_Player;
     QList<QPoint> validMoves = pGame->getValidMoves(currentPlayer);
 
     for( QPoint pos: validMoves ){
@@ -104,7 +104,7 @@ void CReversiWidget::drawGameOnBoard()
         QPointF origin = QPointF( (col * m_CellSize.width() + offsetX), (row * m_CellSize.height() + offsetY) );
 
         QRectF drawRect = QRectF(origin, m_CellSize / 2);
-        if ( currentPlayer == eColor::White ){
+        if ( currentPlayer == ePlayer::First ){
             paintGameBoard.drawPixmap(drawRect.toRect(), m_firstPlayerMove);
         } else {
             paintGameBoard.drawPixmap(drawRect.toRect(), m_secondPlayerMove);
@@ -234,13 +234,13 @@ QRect CReversiWidget::convertCellToRect(QPoint Cell)
 void CReversiWidget::drawLastMoveIndicator(QPainter* Painter)
 {
     ReversiSpot lastMove = CReversiGame::getGlobalInstance()->getLastMove();
-    QColor lastMoveColor = (lastMove.m_SpotColor == eColor::White ? m_firstPlayerColor : m_secondPlayerColor);
+    QColor lastMoveColor = (lastMove.m_CapturedBy == ePlayer::First ? m_firstPlayerColor : m_secondPlayerColor);
 
     static float opacity = 0.3f;
     static bool increase = true;
-    static eColor lastColor = eColor::White;
+    static ePlayer lastColor = ePlayer::First;
 
-    if ( lastColor == lastMove.m_SpotColor ){
+    if ( lastColor == lastMove.m_CapturedBy ){
         if ( increase ){
             if ( opacity <= 0.8f ){
                 opacity += 0.05f;
@@ -258,7 +258,7 @@ void CReversiWidget::drawLastMoveIndicator(QPainter* Painter)
     } else {
         opacity = 0.3f;
         increase = true;
-        lastColor = lastMove.m_SpotColor;
+        lastColor = lastMove.m_CapturedBy;
     }
 
     /* show where the last move occured */

@@ -31,6 +31,7 @@ qt_add_executable(reversi WIN32 MACOSX_BUNDLE
     ceventfilter.h ceventfilter.cpp
     utility.h
     utility.cpp
+    cplayer.h cplayer.cpp
 
 )
 
