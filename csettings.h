@@ -18,14 +18,14 @@ public:
     void setBoardColor(QColor Color);
     QColor boardColor();
 
-    void setPlayerColor(eColor playerColor, QColor Color);
-    QColor playerColor(eColor playerColor);
+    void setPlayerColor(ePlayer playerColor, QColor Color);
+    QColor playerColor(ePlayer playerColor);
 
-    void setPlayerName(eColor playerColor, QString playerName);
-    QString playerName(eColor playerColor);
+    void setPlayerName(ePlayer playerColor, QString playerName);
+    QString playerName(ePlayer playerColor);
 
-    void setPlayerType(eColor playerColor, ePlayerType playerType);
-    ePlayerType playerType(eColor playerColor);
+    void setPlayerType(ePlayer playerColor, ePlayerType playerType);
+    ePlayerType playerType(ePlayer playerColor);
 
     void setDifficulty(int difficulty);
     int difficulty();
@@ -42,7 +42,7 @@ private:
 
     QList<QColor> m_playerColors = QList<QColor>({Qt::white,Qt::black});
     QList<QString> m_playerNames = QList<QString>({"Player","Computer"});
-    QList<ePlayerType> m_playerType = QList<ePlayerType>({ePlayerType::Human,ePlayerType::Computer});
+    QList<ePlayerType> m_playerType = QList<ePlayerType>({ePlayerType::Human,ePlayerType::Ai});
 
     int m_difficulty = 1; //place holder for something more constructive later
 

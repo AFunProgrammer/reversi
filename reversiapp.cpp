@@ -17,24 +17,24 @@ void ReversiApp::updateGameSettings()
     CSettings* pSettings = CSettings::getGlobalInstance();
 
     for (int i=0; i<pSettings->numberOfPlayers(); i++){
-        pGame->setPlayerInfo(eColor(i), pSettings->playerName(eColor(i)), pSettings->playerType(eColor(i)));
+        pGame->setPlayerInfo(ePlayer(i), pSettings->playerName(ePlayer(i)), pSettings->playerType(ePlayer(i)));
     }
 
     pGameBoard->setBoardColor(pSettings->boardColor());
 
-    pGameBoard->setPlayerColor(0,pSettings->playerColor(eColor::White));
-    pGameBoard->setPlayerColor(1,pSettings->playerColor(eColor::Black));
+    pGameBoard->setPlayerColor(0,pSettings->playerColor(ePlayer::First));
+    pGameBoard->setPlayerColor(1,pSettings->playerColor(ePlayer::Second));
 
-    QPixmap firstPlayerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", pSettings->playerColor(eColor::White), QSize(16,16)));
-    QPixmap secondPlayerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", pSettings->playerColor(eColor::Black), QSize(16,16)));
+    QPixmap firstPlayerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", pSettings->playerColor(ePlayer::First), QSize(16,16)));
+    QPixmap secondPlayerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", pSettings->playerColor(ePlayer::Second), QSize(16,16)));
 
     // Set player colored icons
     ui->btnWhite->setIcon(QIcon(firstPlayerIcon));
     ui->btnBlack->setIcon(QIcon(secondPlayerIcon));
 
     // Set the initial players for startup of Player,Computer
-    ui->btnWhite->setText(pSettings->playerName(eColor::White));
-    ui->btnBlack->setText(pSettings->playerName(eColor::Black));
+    ui->btnWhite->setText(pSettings->playerName(ePlayer::First));
+    ui->btnBlack->setText(pSettings->playerName(ePlayer::Second));
 }
 
 void ReversiApp::showGameSettings()
@@ -53,7 +53,7 @@ void ReversiApp::showGameSettings()
     updateGameSettings();
 }
 
-void ReversiApp::showPlayerSettings(eColor PlayerColor)
+void ReversiApp::showPlayerSettings(ePlayer PlayerColor)
 {
     CReversiGame* pGame = CReversiGame::getGlobalInstance();
 
@@ -72,13 +72,13 @@ void ReversiApp::showPlayerSettings(eColor PlayerColor)
 void announceWinner(QWidget* parent)
 {
     CReversiGame* pGame = CReversiGame::getGlobalInstance();
-    ReversiPlayer whitePlayer = pGame->getPlayer(eColor::White);
-    ReversiPlayer blackPlayer = pGame->getPlayer(eColor::Black);
+    ReversiPlayer whitePlayer = pGame->getPlayer(ePlayer::First);
+    ReversiPlayer blackPlayer = pGame->getPlayer(ePlayer::Second);
     QString winnerScore = "";
     QString loserScore = "";
 
-    int whiteScore = pGame->getPlayerScore(eColor::White);
-    int blackScore = pGame->getPlayerScore(eColor::Black);
+    int whiteScore = pGame->getPlayerScore(ePlayer::First);
+    int blackScore = pGame->getPlayerScore(ePlayer::Second);
 
     if ( whiteScore > blackScore ){
         winnerScore = QString::number(whiteScore,10).rightJustified(2,'0');
@@ -103,12 +103,12 @@ bool areThereAnyValidMovesLeft(ReversiPlayer* Player, QList<QPoint>* ValidMoves)
 
     // check for any valid moves, if not see if the next player has moves
     if ( ValidMoves->count() == 0 ){
-        eColor checkColorForMoves = eColor::None;
+        ePlayer checkColorForMoves = ePlayer::None;
         // change the player to the next player (should only be 2 players)
-        if ( Player->m_PlayerColor == pGame->getPlayers()[0].m_PlayerColor ){
-            checkColorForMoves = pGame->getPlayers()[1].m_PlayerColor;
+        if ( Player->m_Player == pGame->getPlayers()[0].m_Player ){
+            checkColorForMoves = pGame->getPlayers()[1].m_Player;
         } else {
-            checkColorForMoves = pGame->getPlayers()[0].m_PlayerColor;
+            checkColorForMoves = pGame->getPlayers()[0].m_Player;
         }
 
         // check to see if the other player has any moves
@@ -117,7 +117,7 @@ bool areThereAnyValidMovesLeft(ReversiPlayer* Player, QList<QPoint>* ValidMoves)
             pGame->setNextTurnFromNoValidMoves();
             // get data to be used for movements
             *Player = pGame->getPlayerTurn();
-            *ValidMoves = pGame->getValidMoves(Player->m_PlayerColor);
+            *ValidMoves = pGame->getValidMoves(Player->m_Player);
         } else {
             //nobody has any moves, end the game
             return false;
@@ -138,7 +138,7 @@ void makeComputerMove(QList<QPoint> validMoves)
            ( move.x() == 7 && move.y() == 0 ) ||
            ( move.x() == 0 && move.y() == 7 ) ||
            ( move.x() == 7 && move.y() == 7 ) ) {
-            qDebug() << "chose corner move at: " << move << " For Player: " << (player.m_PlayerColor == eColor::Black? "Black" : "White");
+            qDebug() << "chose corner move at: " << move << " For Player: " << (player.m_Player == ePlayer::Second? "Black" : "White");
             pGame->makeMove(move);
             return;
         }
@@ -146,7 +146,7 @@ void makeComputerMove(QList<QPoint> validMoves)
 
     int randomIndex = QRandomGenerator::global()->generate() % validMoves.size();
     QPoint move = validMoves.at(randomIndex);
-    qDebug() << "chose Random move at: " << move << " For Player: " << (player.m_PlayerColor == eColor::Black? "Black" : "White");
+    qDebug() << "chose Random move at: " << move << " For Player: " << (player.m_Player == ePlayer::Second? "Black" : "White");
     pGame->makeMove(move);
 }
 
@@ -155,18 +155,18 @@ void ReversiApp::selectNextMoveForComputer()
     CReversiGame* pGame = CReversiGame::getGlobalInstance();
 
     ReversiPlayer player = pGame->getPlayerTurn();
-    QList<QPoint> validMoves = pGame->getValidMoves(player.m_PlayerColor);
+    QList<QPoint> validMoves = pGame->getValidMoves(player.m_Player);
 
     // Check to see if all moves have been done, if so then don't try to move anymore
     if ( pGame->getMoves().count() <= 60 && m_gameStart ){
-        validMoves = pGame->getValidMoves(player.m_PlayerColor);
+        validMoves = pGame->getValidMoves(player.m_Player);
 
         if ( areThereAnyValidMovesLeft(&player, &validMoves) == false ){
             announceWinner(this); // no moves left so there must be a winner
             m_gameStart = false;
         }
 
-        if ( player.m_PlayerType == ePlayerType::Computer && m_gameStart == true){
+        if ( player.m_PlayerType == ePlayerType::Ai && m_gameStart == true){
             makeComputerMove(validMoves);
         } else if (player.m_PlayerType == ePlayerType::Human && m_gameStart == true){
             /* Human moves are done on the widget, not in the timer */
@@ -182,8 +182,8 @@ void ReversiApp::updateUiForGameProgress()
 {
     CReversiGame* pGame = CReversiGame::getGlobalInstance();
 
-    int WhiteScore = pGame->getPlayerScore(eColor::White);
-    int BlackScore = pGame->getPlayerScore(eColor::Black);
+    int WhiteScore = pGame->getPlayerScore(ePlayer::First);
+    int BlackScore = pGame->getPlayerScore(ePlayer::Second);
 
     QString formattedWhiteScore = QString::number(WhiteScore,10).rightJustified(2,'0');
     QString formattedBlackScore = QString::number(BlackScore,10).rightJustified(2,'0');
@@ -207,8 +207,8 @@ ReversiApp::ReversiApp(QWidget *parent)
 
     // Setup Buttons
     ui->btnClose->connect(ui->btnClose, &QPushButton::clicked, qApp, &QCoreApplication::quit);
-    ui->btnWhite->connect(ui->btnWhite, &QPushButton::clicked, [this](){showPlayerSettings(eColor::White);});
-    ui->btnBlack->connect(ui->btnBlack, &QPushButton::clicked, [this](){showPlayerSettings(eColor::Black);});
+    ui->btnWhite->connect(ui->btnWhite, &QPushButton::clicked, [this](){showPlayerSettings(ePlayer::First);});
+    ui->btnBlack->connect(ui->btnBlack, &QPushButton::clicked, [this](){showPlayerSettings(ePlayer::Second);});
 
     ui->btnStart->connect(ui->btnStart, &QPushButton::clicked, [this](){
         // Setup Game

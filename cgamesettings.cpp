@@ -43,7 +43,7 @@ CGameSettings::CGameSettings(QWidget *parent)
         QColor color = QColorDialog::getColor(Qt::white, nullptr, "Select Color");
 
         if(color.isValid()) {
-            pSettings->setPlayerColor(eColor::White, color);
+            pSettings->setPlayerColor(ePlayer::First, color);
             setCtlsToGameSettings();
         }
     });
@@ -54,7 +54,7 @@ CGameSettings::CGameSettings(QWidget *parent)
         QColor color = QColorDialog::getColor(Qt::white, nullptr, "Select Color");
 
         if(color.isValid()) {
-            pSettings->setPlayerColor(eColor::Black, color);
+            pSettings->setPlayerColor(ePlayer::Second, color);
             setCtlsToGameSettings();
         }
     });
@@ -82,11 +82,11 @@ void CGameSettings::setCtlsToGameSettings(){
     ui->ctlBoardColor->setStyleSheet(QString("background-color: %1").arg(pSettings->boardColor().name()));
 
     // setup the Player Color control
-    QPixmap firstPlayerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", pSettings->playerColor(eColor::White), QSize(36,36)));
+    QPixmap firstPlayerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", pSettings->playerColor(ePlayer::First), QSize(36,36)));
     ui->btnFirstPlayerColor->setIcon(QIcon(firstPlayerIcon));
 
     // setup the Player Color control
-    QPixmap secondPlayerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", pSettings->playerColor(eColor::Black), QSize(36,36)));
+    QPixmap secondPlayerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", pSettings->playerColor(ePlayer::Second), QSize(36,36)));
     ui->btnSecondPlayerColor->setIcon(QIcon(secondPlayerIcon));
 }
 

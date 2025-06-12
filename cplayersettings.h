@@ -17,7 +17,7 @@ public:
     explicit CPlayerSettings(QWidget *parent = nullptr);
     ~CPlayerSettings();
 
-    void editPlayer(ReversiPlayer EditPlayer = {eColor::None, "Not Found", ePlayerType::Observer});
+    void editPlayer(ReversiPlayer EditPlayer = {ePlayer::None, "Not Found", ePlayerType::Observer});
 
 private:
     Ui::CPlayerSettings *ui;

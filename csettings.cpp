@@ -22,30 +22,30 @@ QColor CSettings::boardColor(){
 
 
 // Player Colors
-void CSettings::setPlayerColor(eColor playerColor, QColor Color) {
+void CSettings::setPlayerColor(ePlayer playerColor, QColor Color) {
     m_playerColors[static_cast<int>(playerColor)] = Color;
 }
 
-QColor CSettings::playerColor(eColor playerColor) {
+QColor CSettings::playerColor(ePlayer playerColor) {
     return m_playerColors[static_cast<int>(playerColor)];
 }
 
 
 // Player Names
-void CSettings::setPlayerName(eColor playerColor, QString playerName){
+void CSettings::setPlayerName(ePlayer playerColor, QString playerName){
     m_playerNames[static_cast<int>(playerColor)] = playerName;
 }
 
-QString CSettings::playerName(eColor playerColor){
+QString CSettings::playerName(ePlayer playerColor){
     return m_playerNames[static_cast<int>(playerColor)];
 }
 
 // Player Types
-void CSettings::setPlayerType(eColor playerColor, ePlayerType playerType){
+void CSettings::setPlayerType(ePlayer playerColor, ePlayerType playerType){
     m_playerType[static_cast<int>(playerColor)] = playerType;
 }
 
-ePlayerType CSettings::playerType(eColor playerColor){
+ePlayerType CSettings::playerType(ePlayer playerColor){
     return m_playerType[static_cast<int>(playerColor)];
 }
 
@@ -73,7 +73,7 @@ void CSettings::resetSettings(){
 
     m_playerColors = QList<QColor>({Qt::white, Qt::black});
     m_playerNames = QList<QString>({"Player", "Computer"});
-    m_playerType = QList<ePlayerType>({ePlayerType::Human, ePlayerType::Computer});
+    m_playerType = QList<ePlayerType>({ePlayerType::Human, ePlayerType::Ai});
 
     m_difficulty = 1; //place holder for something more constructive later
 

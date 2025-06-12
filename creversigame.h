@@ -8,31 +8,27 @@
 #include <QSet>
 #include <QSize>
 
+#include "cplayer.h"
+
 enum class eGameType{
     Local = 0x0,
     Online
 };
 
-enum class ePlayerType{
-    Computer = 0x0,
-    Human,
-    Observer
-};
-
-enum class eColor{
-    White = 0x0,
-    Black,
+enum class ePlayer{
+    First = 0x0,
+    Second,
     None
 };
 
 typedef struct S_ReversiPlayer{
-    eColor m_PlayerColor = eColor::None;
+    ePlayer m_Player = ePlayer::None;
     QString m_PlayerName = "";
     ePlayerType m_PlayerType = ePlayerType::Observer;
 }ReversiPlayer,*PReversiPlayer;
 
 typedef struct S_ReversiSpot{
-    eColor m_SpotColor = eColor::None;
+    ePlayer m_CapturedBy = ePlayer::None;
     QPoint m_Spot = QPoint(-1,-1);
     int m_ChangedOnMove = -1;
 }ReversiSpot,*PReversiSpot;
@@ -44,11 +40,11 @@ public:
     explicit CReversiGame(QSize BoardSize = QSize(8,8), QObject *parent = nullptr);
 
     // get the player information to be adjusted
-    ReversiPlayer getPlayer(eColor PlayerColor);
+    ReversiPlayer getPlayer(ePlayer PlayerColor);
     // set the player information that was needed to be adjusted (Color selects which
     //   player is to be adjusted [either white or black]
     // RETURNS true if set, otherwise false
-    bool setPlayerInfo(eColor PlayerColor, QString PlayerName, ePlayerType PlayerType);
+    bool setPlayerInfo(ePlayer PlayerColor, QString PlayerName, ePlayerType PlayerType);
 
     // return true if a valid move, otherwise false
     bool makeMove(QPoint Spot);
@@ -59,23 +55,23 @@ public:
     bool setNextTurnFromNoValidMoves();
 
     // get a list of valid movies
-    QList<QPoint> getValidMoves(eColor PlayerColor);
+    QList<QPoint> getValidMoves(ePlayer PlayerColor);
 
     // get the last move in the game
     ReversiSpot getLastMove();
     // get the last move that a player made
-    ReversiSpot getLastMove(eColor Color);
+    ReversiSpot getLastMove(ePlayer Color);
 
     // get all moves made
     QList<ReversiSpot> getMoves();
     // get all moves made by a player
-    QList<ReversiSpot> getMoves(eColor Color);
+    QList<ReversiSpot> getMoves(ePlayer Color);
 
     // get game board
     QList<QList<ReversiSpot>> getGameBoard();
 
     // get the current score for a player
-    int getPlayerScore(eColor Color);
+    int getPlayerScore(ePlayer Color);
 
     // get list of players
     QList<ReversiPlayer> getPlayers();

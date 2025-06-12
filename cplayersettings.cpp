@@ -17,7 +17,7 @@ CPlayerSettings::CPlayerSettings(QWidget *parent)
     CSettings* pSettings = CSettings::getGlobalInstance();
 
     // Add known player types (not clean but effective)
-    ui->cboPlayerType->addItem(tr("Computer"),  QVariant::fromValue(static_cast<int>(ePlayerType::Computer)));
+    ui->cboPlayerType->addItem(tr("Computer"),  QVariant::fromValue(static_cast<int>(ePlayerType::Ai)));
     ui->cboPlayerType->addItem(tr("Human"),     QVariant::fromValue(static_cast<int>(ePlayerType::Human)));
 
     // Setup the control for player color changing
@@ -34,7 +34,7 @@ CPlayerSettings::CPlayerSettings(QWidget *parent)
             QString colorName = color.name();
             QPixmap playerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", color, QSize(36,36)));
             ui->btnColor->setIcon(QIcon(playerIcon));
-            pSettings->setPlayerColor(m_EditPlayer.m_PlayerColor, color);
+            pSettings->setPlayerColor(m_EditPlayer.m_Player, color);
         }
     });
 
@@ -55,7 +55,7 @@ void CPlayerSettings::editPlayer(ReversiPlayer EditPlayer)
     ui->txtName->setText(m_EditPlayer.m_PlayerName);
 
     // set the player color
-    QPixmap playerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", pSettings->playerColor(m_EditPlayer.m_PlayerColor), QSize(40,40)));
+    QPixmap playerIcon = QPixmap::fromImage(createColoredSvgButton(":/images/glassbutton", pSettings->playerColor(m_EditPlayer.m_Player), QSize(40,40)));
     ui->btnColor->setIcon(QIcon(playerIcon));
 }
 
@@ -69,10 +69,10 @@ void CPlayerSettings::applyChanges()
     ePlayerType playerType = (ePlayerType)(ui->cboPlayerType->currentData().toInt());
 
     // only update the settings and call game settings update after this dialog closes
-    pSettings->setPlayerName(m_EditPlayer.m_PlayerColor, updateName);
-    pSettings->setPlayerType(m_EditPlayer.m_PlayerColor, playerType);
+    pSettings->setPlayerName(m_EditPlayer.m_Player, updateName);
+    pSettings->setPlayerType(m_EditPlayer.m_Player, playerType);
 
-    qDebug() << "Player Changes Applied for Player:" << (int)m_EditPlayer.m_PlayerColor << " Name: " << updateName << " Type: " << (int)playerType;
+    qDebug() << "Player Changes Applied for Player:" << (int)m_EditPlayer.m_Player << " Name: " << updateName << " Type: " << (int)playerType;
 
     this->accept();
 }

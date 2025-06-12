@@ -34,7 +34,7 @@ private:
 
     void selectNextMoveForComputer();
     void updateGameSettings();
-    void showPlayerSettings(eColor PlayerColor);
+    void showPlayerSettings(ePlayer PlayerColor);
     void showGameSettings();
     void updateUiForGameProgress();
 
