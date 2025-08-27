@@ -8,7 +8,7 @@ set(CMAKE_AUTORCC ON)
 
 # Find all required Qt components.
 # Ensure all components you link are listed here.
-# Changed version to 6.7.3.
+# Changed version to 6.5.3.
 find_package(Qt6 6.5.3 REQUIRED COMPONENTS Core Gui Widgets OpenGLWidgets Svg Xml) # Added Widgets
 
 qt_standard_project_setup()
@@ -23,16 +23,15 @@ qt_add_executable(reversi WIN32 MACOSX_BUNDLE
     main.cpp
     playersettings.ui
     reversiapp.cpp reversiapp.h reversiapp.ui
-    android/AndroidManifest.xml android/build.gradle android/res/values/libs.xml android/gradle/wrapper/gradle-wrapper.jar android/gradle/wrapper/gradle-wrapper.properties android/gradle.properties android/gradlew android/gradlew.bat
     reversiapp.qrc
-    MANUAL_FINALIZATION
     cgamesettings.h cgamesettings.cpp gamesettings.ui
     csettings.h csettings.cpp
     ceventfilter.h ceventfilter.cpp
     utility.h
     utility.cpp
     cplayer.h cplayer.cpp
-
+    MANUAL_FINALIZATION
+    android/AndroidManifest.xml android/build.gradle android/res/values/libs.xml android/gradle/wrapper/gradle-wrapper.jar android/gradle/wrapper/gradle-wrapper.properties android/gradle.properties android/gradlew android/gradlew.bat
 )
 
 # Link all required Qt libraries.
@@ -56,15 +55,11 @@ if(ANDROID)
 
     # QT_ANDROID_MIN_SDK_VERSION:
     # Set to recommended minimum for Qt 6.5.3. (26 is actually but trying 24)
-    set_property(TARGET reversi PROPERTY QT_ANDROID_MIN_SDK_VERSION 24)
+    set_property(TARGET reversi PROPERTY QT_ANDROID_MIN_SDK_VERSION 25)
 
     # QT_ANDROID_TARGET_SDK_VERSION:
     # Set to current recommended target.
-    set_property(TARGET reversi PROPERTY QT_ANDROID_TARGET_SDK_VERSION 34)
-
-    # QT_ANDROID_ABIS:
-    # Enable all common ABIs for the App Bundle.
-    set_property(TARGET reversi PROPERTY QT_ANDROID_ABIS "armeabi-v7a;arm64-v8a;x86;x86_64")
+    set_property(TARGET reversi PROPERTY QT_ANDROID_TARGET_SDK_VERSION 35)
 
     # Manually finalize the executable for Android deployment.
     # This must be uncommented when using MANUAL_FINALIZATION.

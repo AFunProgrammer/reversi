@@ -8,7 +8,25 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QRandomGenerator>
-#include <QREsource>
+#include <QResource>
+#include <QScreen>
+
+void centerDialog(QDialog *dialog) {
+    QWidget *parent = dialog->parentWidget();
+    if (parent) {
+        QPoint center = parent->geometry().center();
+        QRect dlgRect = dialog->frameGeometry();
+        dlgRect.moveCenter(center);
+        dialog->move(dlgRect.topLeft());
+    } else {
+        // Fallback to screen center
+        QRect screenGeometry = QGuiApplication::primaryScreen()->availableGeometry();
+        QRect dlgRect = dialog->frameGeometry();
+        dlgRect.moveCenter(screenGeometry.center());
+        dialog->move(dlgRect.topLeft());
+    }
+}
+
 
 void ReversiApp::updateGameSettings()
 {
@@ -40,13 +58,15 @@ void ReversiApp::updateGameSettings()
 void ReversiApp::showGameSettings()
 {
     CReversiGame* pGame = CReversiGame::getGlobalInstance();
-
+    m_gameOptionsDlg.setParent(this, Qt::Dialog); // Assuming ReversiApp inherits from a QWidget or QMainWindow
     m_gameOptionsDlg.setModal(true);
 
 #if defined(Q_OS_ANDROID)
     // Adjust the width to the screen width (or center in the screen)
     //fileDialog.setWindowState(Qt::WindowMaximized);
 #endif
+    //m_gameOptionsDlg.setAttribute(Qt::WA_DeleteOnClose);
+    centerDialog(&m_gameOptionsDlg);
     m_gameOptionsDlg.exec();
 
     // get the resulting data
@@ -58,12 +78,15 @@ void ReversiApp::showPlayerSettings(ePlayer PlayerColor)
     CReversiGame* pGame = CReversiGame::getGlobalInstance();
 
     m_playerSettingsDlg.editPlayer(pGame->getPlayer(PlayerColor));
+    m_playerSettingsDlg.setParent(this, Qt::Dialog);
     m_playerSettingsDlg.setModal(true);
 
 #if defined(Q_OS_ANDROID)
     // Adjust the width to the screen width (or center in the screen)
     //fileDialog.setWindowState(Qt::WindowMaximized);
 #endif
+    //m_playerSettingsDlg.setAttribute(Qt::WA_DeleteOnClose);
+    centerDialog(&m_playerSettingsDlg);
     m_playerSettingsDlg.exec();
 
     updateGameSettings();
