@@ -55,7 +55,7 @@ if(ANDROID)
 
     # QT_ANDROID_MIN_SDK_VERSION:
     # Set to recommended minimum for Qt 6.5.3. (26 is actually but trying 24)
-    set_property(TARGET reversi PROPERTY QT_ANDROID_MIN_SDK_VERSION 25)
+    set_property(TARGET reversi PROPERTY QT_ANDROID_MIN_SDK_VERSION 24)
 
     # QT_ANDROID_TARGET_SDK_VERSION:
     # Set to current recommended target.
