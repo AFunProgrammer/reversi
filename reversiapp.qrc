@@ -3,5 +3,9 @@
         <file alias="tlb-colorwheel">assets/colorwheel.png</file>
         <file alias="glassbutton">assets/glassbutton.svg</file>
         <file alias="flatmove">assets/flatmove.svg</file>
+        <file alias="reversi.png">assets/reversi.png</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file alias="reversi.ico">assets/reversi.ico</file>
     </qresource>
 </RCC>

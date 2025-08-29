@@ -489,6 +489,10 @@
   <property name="windowTitle">
    <string>ReversiApp</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="reversiapp.qrc">
+    <normaloff>:/icons/reversi.ico</normaloff>:/icons/reversi.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="2" column="0">

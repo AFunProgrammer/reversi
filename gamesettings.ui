@@ -500,6 +500,10 @@
   <property name="windowTitle">
    <string>Game Settings</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="reversiapp.qrc">
+    <normaloff>:/icons/reversi.ico</normaloff>:/icons/reversi.ico</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -537,7 +541,7 @@
         <number>-1</number>
        </property>
        <property name="sizeAdjustPolicy">
-        <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        <enum>QComboBox::AdjustToContents</enum>
        </property>
        <property name="placeholderText">
         <string>1</string>
@@ -564,10 +568,10 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
-        <enum>QSizePolicy::Policy::Maximum</enum>
+        <enum>QSizePolicy::Maximum</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -592,7 +596,7 @@
         </size>
        </property>
        <property name="frameShape">
-        <enum>QFrame::Shape::Panel</enum>
+        <enum>QFrame::Panel</enum>
        </property>
        <property name="lineWidth">
         <number>2</number>
@@ -692,7 +696,7 @@
      <item>
       <spacer name="horizontalSpacer_5">
        <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -711,13 +715,13 @@
         </sizepolicy>
        </property>
        <property name="contextMenuPolicy">
-        <enum>Qt::ContextMenuPolicy::NoContextMenu</enum>
+        <enum>Qt::NoContextMenu</enum>
        </property>
        <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Close|QDialogButtonBox::StandardButton::Reset</set>
+        <set>QDialogButtonBox::Close|QDialogButtonBox::Reset</set>
        </property>
        <property name="centerButtons">
         <bool>false</bool>
