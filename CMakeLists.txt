@@ -67,6 +67,23 @@ if(ANDROID)
 endif()
 # --- End Android-specific Configuration ---
 
+# --- macOS-specific configuration ---
+if(APPLE)
+    set_target_properties(reversi PROPERTIES
+        MACOSX_BUNDLE_BUNDLE_NAME "Reversi"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.inspiringfamily.reversi"
+        MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
+        MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}"
+        MACOSX_BUNDLE_INFO_STRING "Reversi Game"
+        MACOSX_BUNDLE_ICON_FILE "reversi.icns"   # <--- Important line
+    )
+
+    set(APP_ICON "${CMAKE_CURRENT_SOURCE_DIR}/assets/reversi.icns")
+    set_source_files_properties(${APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+    target_sources(reversi PRIVATE ${APP_ICON})
+endif()
+# --- end macOS-specific ---
+
 # Install only on non-Android platforms (if applicable for desktop).
 if(NOT ANDROID)
     install(TARGETS reversi
